@@ -53,7 +53,7 @@ const SignUpForm = () => {
                     id="email"
                     name="email"
                     type="email"
-                    autoComplete="email"
+                    autoComplete="email" //tự động điền.
                     placeholder="Enter your email"
                     required
                     value={email}
