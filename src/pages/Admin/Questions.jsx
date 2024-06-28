@@ -4,10 +4,14 @@ import Layout from '../../components/Layout/layout';
 import AdminMenu from '../../components/Layout/AdminMenu';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Questions = () => {
   const [question, setQuestions] = useState([]);
+  const params = useParams();
+  const [courses, setCourses] = useState([]);
+  const [id, setId] = useState('');
+  const navigate = useNavigate();
 
   //get all questions
   const getAllQuestions = async () => {
@@ -24,6 +28,23 @@ const Questions = () => {
     getAllQuestions();
   }, []);
 
+  // get all courses
+  const getAllCourses = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      if (data?.success) {
+        setCourses(data?.courses);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    getAllCourses();
+  }, []);
+
   return (
     <Layout title="Dashboard - All Questions">
       <div className="row">
@@ -37,22 +58,19 @@ const Questions = () => {
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
                   <Link
-                    key={q._id}
+                    key={q.slug}
                     to={`/dashboard/admin/question/${q.slug}`}
                     className="question-link"
                   >
                     <h5 className="card-title">Môn học: {q.subject}</h5>
-                    <h4 className="card-title">Lớp: {q.gradeLevel}</h4>
+                    <h4 className="card-title">Khóa học: {q.course.name}</h4>
                     <p className="card-text">Chủ đề: {q.topic}</p>
                     <p className="card-text">Câu hỏi: {q.content}</p>
                   </Link>
                 </div>
-                <div className="flex-wrap">
+                <div className="flex-wrap" style={{ paddingLeft: '73px' }}>
                   <div className="mb-3">
-                    <button className="btn btn-info">Detail Question</button>
-                  </div>
-                  <div className="mb-3">
-                    <button className="btn btn-warning">Duplicate Question</button>
+                    <button className="btn btn-info ">Detail Question</button>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GradeForm = ({ value, handleSubmit, setValue }) => {
+const CourseForm = ({ value, handleSubmit, setValue }) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -8,7 +8,7 @@ const GradeForm = ({ value, handleSubmit, setValue }) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Enter Grade"
+            placeholder="Enter Course Name or Grade Level"
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
@@ -21,4 +21,4 @@ const GradeForm = ({ value, handleSubmit, setValue }) => {
   );
 };
 
-export default GradeForm;
+export default CourseForm;

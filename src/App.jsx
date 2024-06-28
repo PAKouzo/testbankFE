@@ -20,6 +20,7 @@ import Profile from './pages/User/Student/Profile';
 import TestStatistic from './pages/User/Student/TestStatistic';
 import Questions from './pages/Admin/Questions';
 import UpdateQuestion from './pages/Admin/UpdateQuestion';
+import CreateCourse from './pages/Admin/CreateCourse';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="admin/create-test" element={<CreateTest />} />
           <Route path="admin/create-question" element={<CreateQuestion />} />
+          <Route path="admin/create-course" element={<CreateCourse />} />
           <Route path="admin/question/:slug" element={<UpdateQuestion />} />
           <Route path="admin/questions" element={<Questions />} />
           <Route path="admin/users" element={<Users />} />
