@@ -1,14 +1,14 @@
 import React from 'react'
-import './style.css'
+// import './style.css'
 
 const Footer = () => {
   return (
     <div className='container'>
-        <div className='block'>
+        {/* <div className='block'>
             <div className='item'>Testbank</div>
             <div className='item'>About us</div>
             <div className='item'>Contact</div>
-        </div>
+        </div> */}
     </div>
   )
 }

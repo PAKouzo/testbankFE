@@ -1,11 +1,11 @@
 import React from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 const items = [
   {
     key: 'sub1',
-    label: 'Management',
-    icon: <MailOutlined />,
+    label: 'Dashboard',
+    icon: <UserOutlined/>,
     children: [
       {
         key: 'g1',
@@ -22,50 +22,89 @@ const items = [
           },
         ],
       },
-      {
-        key: 'g2',
-        label: 'Grade',
-        type: 'group',
-        children: [
-          {
-            key: '3',
-            label: '12 Grade',
-          },
-          {
-            key: '4',
-            label: 'Option 4',
-          },
-        ],
-      },
+      // {
+      //   key: 'g2',
+      //   label: 'Grade',
+      //   type: 'group',
+      //   children: [
+      //     {
+      //       key: '3',
+      //       label: '12 Grade',
+      //     },
+      //     {
+      //       key: '4',
+      //       label: 'Option 4',
+      //     },
+      //   ],
+      // },
     ],
   },
   {
     key: 'sub2',
-    label: 'Navigation Two',
-    icon: <AppstoreOutlined />,
+    label: 'Grades',
     children: [
       {
         key: '5',
-        label: 'Option 5',
+        label: 'Grade 1',
       },
       {
         key: '6',
-        label: 'Option 6',
+        label: 'Grade 2',
       },
       {
-        key: 'sub3',
-        label: 'Submenu',
-        children: [
-          {
-            key: '7',
-            label: 'Option 7',
-          },
-          {
-            key: '8',
-            label: 'Option 8',
-          },
-        ],
+        key: '7',
+        label: 'Grade 3',
       },
+      {
+        key: '8',
+        label: 'Grade 4',
+      },
+      {
+        key: '9',
+        label: 'Grade 5',
+      },
+      {
+        key: '10',
+        label: 'Grade 6',
+      },
+      {
+        key: '11',
+        label: 'Grade 7',
+      },
+      {
+        key: '12',
+        label: 'Grade 8',
+      },
+      {
+        key: '13',
+        label: 'Grade 9',
+      },
+      {
+        key: '14',
+        label: 'Grade 10',
+      },
+      {
+        key: '15',
+        label: 'Grade 11',
+      },
+      {
+        key: '16',
+        label: 'Grade 12',
+      },
+      // {
+      //   key: 'sub3',
+      //   label: 'Submenu',
+      //   children: [
+      //     {
+      //       key: '7',
+      //       label: 'Option 7',
+      //     },
+      //     {
+      //       key: '8',
+      //       label: 'Option 8',
+      //     },
+      //   ],
+      // },
     ],
   },
   {
@@ -73,39 +112,62 @@ const items = [
   },
   {
     key: 'sub4',
-    label: 'Navigation Three',
-    icon: <SettingOutlined />,
+    label: 'Subjects',
     children: [
       {
-        key: '9',
-        label: 'Option 9',
+        key: '17',
+        label: 'Mathematics',
       },
       {
-        key: '10',
-        label: 'Option 10',
+        key: '18',
+        label: 'Literature',
       },
       {
-        key: '11',
-        label: 'Option 11',
+        key: '19',
+        label: 'English',
       },
       {
-        key: '12',
-        label: 'Option 12',
+        key: '20',
+        label: 'History',
+      },
+      {
+        key: '21',
+        label: 'Physics',
+      },
+      {
+        key: '22',
+        label: 'Chemistry',
+      },
+      {
+        key: '23',
+        label: 'Civic Education',
+      },
+      {
+        key: '24',
+        label: 'Technology',
+      },
+      {
+        key: '25',
+        label: 'Biology',
+      },
+      {
+        key: '26',
+        label: 'Geography',
       },
     ],
   },
   {
     key: 'grp',
-    label: 'Group',
+    label: 'Setting',
     type: 'group',
     children: [
       {
-        key: '13',
-        label: 'Option 13',
+        key: '27',
+        label: 'Setting',
       },
       {
-        key: '14',
-        label: 'Option 14',
+        key: '28',
+        label: 'Sign out',
       },
     ],
   },

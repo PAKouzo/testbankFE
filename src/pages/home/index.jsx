@@ -4,7 +4,8 @@ const HomePage = () => {
   return (
     <div>
       <Header></Header>
-      <Footer></Footer>
+
+      {/* <Footer></Footer> */}
     </div>
   )
 }
