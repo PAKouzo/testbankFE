@@ -1,0 +1,31 @@
+.details-question {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.details-question h1 {
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.details-question .card-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.details-question h4 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.details-question h4.correct-answer {
+  color: #008000; /* green */
+}
+
+.details-question h4.solution {
+  font-style: italic;
+  color: #666;
+}
