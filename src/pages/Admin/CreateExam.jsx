@@ -22,6 +22,9 @@ const CreateExam = () => {
   const [correctChoice, setCorrectChoice] = useState('');
   const [questions, setQuestions] = useState([]);
   const [selectedQuestions, setSelectedQuestions] = useState(['']);
+  const [timeStart, setTimeStart] = useState('');
+  const [timeEnd, setTimeEnd] = useState('');
+
   const navigate = useNavigate();
 
   // get all courses
@@ -92,6 +95,8 @@ const CreateExam = () => {
         course,
         name,
         time,
+        timeStart,
+        timeEnd,
         point,
         accessTime,
         decription,
@@ -168,6 +173,24 @@ const CreateExam = () => {
                 onChange={(e) => setTime(e.target.value)}
               />
             </div>
+            {/* <div className="mb-3">
+              <input
+                type="text"
+                value={timeStart}
+                placeholder="Thời gian bắt đầu"
+                className="form-control"
+                onChange={(e) => setTimeStart(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                value={timeEnd}
+                placeholder="Thời gian kết thúc"
+                className="form-control"
+                onChange={(e) => setTimeEnd(e.target.value)}
+              />
+            </div> */}
             <div className="mb-3">
               <input
                 type="text"
