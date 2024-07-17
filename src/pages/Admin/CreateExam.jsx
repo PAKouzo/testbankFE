@@ -21,8 +21,7 @@ const CreateExam = () => {
   const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
   const [questions, setQuestions] = useState([]);
-  const [question, setQuestion] = useState('');
-
+  const [selectedQuestions, setSelectedQuestions] = useState(['']);
   const navigate = useNavigate();
 
   // get all courses
@@ -66,27 +65,38 @@ const CreateExam = () => {
     getAllQuestion();
   }, []);
 
+  const handleAddOption = () => {
+    setSelectedQuestions([...selectedQuestions, '']);
+  };
+
+  const handleQuestionChange = (value, index) => {
+    const updatedQuestions = [...selectedQuestions];
+    updatedQuestions[index] = value;
+    setSelectedQuestions(updatedQuestions);
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      const examData = new FormData();
-      examData.append('subject', subject);
-      examData.append('course', course);
-      examData.append('name', name);
-      examData.append('time', time);
-      examData.append('point', point);
-      examData.append('accessTime', accessTime);
-      examData.append('decription', decription);
-      examData.append('accessPassword', accessPassword);
-      examData.append('correctChoice', correctChoice);
-      examData.append('question', question);
+      const examData = {
+        subject,
+        course,
+        name,
+        time,
+        point,
+        accessTime,
+        decription,
+        accessPassword,
+        correctChoice,
+        questions: selectedQuestions,
+      };
 
-      const { data } = axios.post('http://localhost:8080/api/exam/create-exam', examData);
+      const { data } = await axios.post('http://localhost:8080/api/exam/create-exam', examData);
       if (data?.success) {
-        toast.error(data?.message);
-      } else {
         toast.success('Exam Created Successfully');
         navigate('/dashboard/admin/exams');
+      } else {
+        toast.error(data?.message);
       }
     } catch (error) {
       console.log(error);
@@ -194,20 +204,29 @@ const CreateExam = () => {
                 onChange={(e) => setCorrectChoice(e.target.value)}
               />
             </div>
-            <Select
-              bordered={false}
-              placeholder="Select Questions"
-              size="large"
-              showSearch
-              className="form-select mb-3"
-              onChange={(value) => setQuestion(value)}
-            >
-              {questions?.map((question) => (
-                <Option key={question._id} value={question._id}>
-                  {question.content}
-                </Option>
+            <div className="add-question">
+              {selectedQuestions.map((selectedQuestion, index) => (
+                <Select
+                  key={index}
+                  bordered={false}
+                  placeholder="Select Questions"
+                  size="large"
+                  showSearch
+                  className="form-select mb-3"
+                  onChange={(value) => handleQuestionChange(value, index)}
+                  value={selectedQuestion}
+                >
+                  {questions?.map((question) => (
+                    <Option key={question._id} value={question._id}>
+                      {question.content}
+                    </Option>
+                  ))}
+                </Select>
               ))}
-            </Select>
+              <button onClick={handleAddOption} className="bg-primary-subtle">
+                Add Question
+              </button>
+            </div>
             <div className="mb-3">
               <button className="btn btn-primary" onClick={handleCreate}>
                 Create Exam

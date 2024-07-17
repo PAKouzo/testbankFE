@@ -89,11 +89,7 @@ const CreateCourse = () => {
   };
 
   return (
-<<<<<<< HEAD
     <Layout title="Dashboard - Create Course">
-=======
-    <Layout title="Dashboard - Create Test">
->>>>>>> dev2
       <div className="row">
         <div className="col-md-3">
           <AdminMenu />
