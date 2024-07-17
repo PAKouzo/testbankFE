@@ -8,10 +8,10 @@ const AdminMenu = () => {
         <div className="list-group">
           <h4>Admin Panel</h4>
           <NavLink
-            to="/dashboard/admin/create-test"
+            to="/dashboard/admin/create-exams"
             className="list-group-item list-group-item-action "
           >
-            Create Test
+            Create Exams
           </NavLink>
           <NavLink
             to="/dashboard/admin/create-course"
@@ -20,10 +20,19 @@ const AdminMenu = () => {
             Create Course
           </NavLink>
           <NavLink
+            to="/dashboard/admin/create-subject"
+            className="list-group-item list-group-item-action "
+          >
+            Create Subject
+          </NavLink>
+          <NavLink
             to="/dashboard/admin/create-question"
             className="list-group-item list-group-item-action "
           >
             Create Question
+          </NavLink>
+          <NavLink to="/dashboard/admin/exams" className="list-group-item list-group-item-action ">
+            Exams
           </NavLink>
           <NavLink
             to="/dashboard/admin/questions"
