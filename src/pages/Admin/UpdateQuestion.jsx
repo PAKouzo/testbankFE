@@ -192,6 +192,7 @@ const UpdateQuestion = () => {
                 showSearch
                 className="form-control"
                 onChange={(value) => setDifficulty(value)}
+<<<<<<< HEAD
                 value={
                   difficulty === 'Identification'
                     ? 'Identification'
@@ -199,6 +200,9 @@ const UpdateQuestion = () => {
                     ? 'Understanding'
                     : 'Applying'
                 }
+=======
+                value={difficulty ? 'Identification' : 'Understanding' || 'Applying'}
+>>>>>>> dev2
               >
                 <Option value="Identification">Identification</Option>
                 <Option value="Understanding">Understanding</Option>
@@ -213,6 +217,7 @@ const UpdateQuestion = () => {
                 placeholder="Select Type"
                 className="form-control"
                 onChange={(value) => setType(value)}
+<<<<<<< HEAD
                 value={
                   type === 'Choice'
                     ? 'Choice'
@@ -220,6 +225,9 @@ const UpdateQuestion = () => {
                     ? 'Multi-Choice'
                     : 'Text-Input'
                 }
+=======
+                value={type ? 'Choice' : 'Multi-Choice' || 'Text-Input'}
+>>>>>>> dev2
               >
                 <Option value="Choice">Choice</Option>
                 <Option value="Multi-Choice">Multi-Choice</Option>

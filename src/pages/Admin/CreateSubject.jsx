@@ -6,7 +6,7 @@ import axios from 'axios';
 import CourseForm from '../../components/Form/CourseForm';
 import { Modal } from 'antd';
 
-const CreateCourse = () => {
+const CreateSubject = () => {
   const [courses, setCourses] = useState();
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
@@ -17,7 +17,7 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8080/api/course/create-course', {
+      const { data } = await axios.post('http://localhost:8080/api/subject/create', {
         name,
       });
       if (data.success) {
@@ -35,7 +35,7 @@ const CreateCourse = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
       if (data?.success) {
         setCourses(data?.courses);
       }
@@ -54,7 +54,7 @@ const CreateCourse = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/course/update-course/${selected._id}`,
+        `http://localhost:8080/api/subject/update-subject/${selected._id}`,
         {
           name: updatedName,
         },
@@ -76,7 +76,7 @@ const CreateCourse = () => {
   //delete course
   const handleDelete = async (cId) => {
     try {
-      const { data } = await axios.delete(`http://localhost:8080/api/course/delete-course/${cId}`);
+      const { data } = await axios.delete(`http://localhost:8080/api/subject/delete-subject/${cId}`);
       if (data.success) {
         toast.success(`${name} is delete`);
         getAllCourses();
@@ -89,11 +89,7 @@ const CreateCourse = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <Layout title="Dashboard - Create Course">
-=======
     <Layout title="Dashboard - Create Test">
->>>>>>> dev2
       <div className="row">
         <div className="col-md-3">
           <AdminMenu />
@@ -151,4 +147,4 @@ const CreateCourse = () => {
   );
 };
 
-export default CreateCourse;
+export default CreateSubject;

@@ -14,14 +14,16 @@ import ForgotPassword from './pages/Auth/ForgotPassword';
 import AdminRoute from './components/Routes/AdminRoute';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import Users from './pages/Admin/Users';
-import CreateTest from './pages/Admin/CreateTest';
+import CreateExam from './pages/Admin/CreateExam';
 import CreateQuestion from './pages/Admin/CreateQuestion';
 import Profile from './pages/User/Student/Profile';
 import TestStatistic from './pages/User/Student/TestStatistic';
 import Questions from './pages/Admin/Questions';
 import UpdateQuestion from './pages/Admin/UpdateQuestion';
 import CreateCourse from './pages/Admin/CreateCourse';
-import DetailsQuestion from './pages/Admin/DetailsQuestion';
+import Exams from './pages/Admin/Exams';
+import CreateSubject from './pages/Admin/CreateSubject';
+import UpdateExam from './pages/Admin/UpdateExam';
 
 function App() {
   return (
@@ -35,12 +37,14 @@ function App() {
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />
-          <Route path="admin/create-test" element={<CreateTest />} />
           <Route path="admin/create-question" element={<CreateQuestion />} />
+          <Route path="admin/create-exams" element={<CreateExam />} />
           <Route path="admin/create-course" element={<CreateCourse />} />
+          <Route path="admin/create-subject" element={<CreateSubject />} />
           <Route path="admin/question/:slug" element={<UpdateQuestion />} />
-          <Route path="admin/detail-question/:slug" element={<DetailsQuestion />} />
           <Route path="admin/questions" element={<Questions />} />
+          <Route path="admin/exams" element={<Exams />} />
+          <Route path="admin/exam/:slug" element={<UpdateExam />} />
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />

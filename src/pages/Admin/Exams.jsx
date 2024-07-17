@@ -6,21 +6,18 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-const Questions = () => {
-  const [question, setQuestions] = useState([]);
+const Exams = () => {
+  const [exams, setExams] = useState([]);
   const params = useParams();
   const [courses, setCourses] = useState([]);
-<<<<<<< HEAD
-=======
   const [id, setId] = useState('');
->>>>>>> dev2
   const navigate = useNavigate();
 
-  //get all questions
-  const getAllQuestions = async () => {
+  //get all exams
+  const getAllExams = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/question/get-questions');
-      setQuestions(data.questions);
+      const { data } = await axios.get('http://localhost:8080/api/exam/get-all');
+      setExams(data.exams);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
@@ -28,7 +25,7 @@ const Questions = () => {
   };
 
   useEffect(() => {
-    getAllQuestions();
+    getAllExams();
   }, []);
 
   // get all courses
@@ -55,34 +52,24 @@ const Questions = () => {
           <AdminMenu />
         </div>
         <div className="col-md-9">
-          <h1>All Questions</h1>
+          <h1>All Exams</h1>
           <div className="d-flex flex-wrap">
-            {question?.map((q) => (
+            {exams?.map((q) => (
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
                   <Link
-                    key={q.slug}
-                    to={`/dashboard/admin/question/${q.slug}`}
+                    //errors
                     className="question-link"
                   >
-                    <h5 className="card-title">Môn học: {q.subject}</h5>
+                    <h5 className="card-title">Chủ đề: {q.name}</h5>
                     <h4 className="card-title">Khóa học: {q.course.name}</h4>
-                    <p className="card-text">Chủ đề: {q.topic}</p>
-                    <p className="card-text">Câu hỏi: {q.content}</p>
+                    <p className="card-text">Thời gian làm bài: {q.time}</p>
+                    <p className="card-text">Số lần làm bài: {q.accessTime}</p>
                   </Link>
                 </div>
                 <div className="flex-wrap" style={{ paddingLeft: '73px' }}>
                   <div className="mb-3">
-<<<<<<< HEAD
-                    <button
-                      className="btn btn-info "
-                      onClick={() => navigate(`/dashboard/admin/detail-question/${q.slug}`)}
-                    >
-                      Detail Question
-                    </button>
-=======
-                    <button className="btn btn-info ">Detail Question</button>
->>>>>>> dev2
+                    <button className="btn btn-info ">Detail Exams</button>
                   </div>
                 </div>
               </div>
@@ -94,4 +81,4 @@ const Questions = () => {
   );
 };
 
-export default Questions;
+export default Exams;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../components/Layout/layout';
 import UserMenu from '../../../components/Layout/UserMenu';
@@ -57,6 +58,13 @@ const Profile = () => {
       toast.error('Something went wrong');
     }
   };
+=======
+import React from 'react';
+import Layout from '../../../components/Layout/layout';
+import UserMenu from '../../../components/Layout/UserMenu';
+
+const Profile = () => {
+>>>>>>> dev2
   return (
     <Layout title="Your Profile">
       <div className="container-flui p-3 m-3">
@@ -65,6 +73,7 @@ const Profile = () => {
             <UserMenu />
           </div>
           <div className="col-md-9">
+<<<<<<< HEAD
             <div className="form-container">
               <form onSubmit={handleSubmit}>
                 <h4 className="title">USER PROFILE</h4>
@@ -179,6 +188,9 @@ const Profile = () => {
                 </button>
               </form>
             </div>
+=======
+            <h1>Your Profile</h1>
+>>>>>>> dev2
           </div>
         </div>
       </div>
