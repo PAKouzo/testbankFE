@@ -10,10 +10,6 @@ const Questions = () => {
   const [question, setQuestions] = useState([]);
   const params = useParams();
   const [courses, setCourses] = useState([]);
-<<<<<<< HEAD
-=======
-  const [id, setId] = useState('');
->>>>>>> dev2
   const navigate = useNavigate();
 
   //get all questions
@@ -73,16 +69,12 @@ const Questions = () => {
                 </div>
                 <div className="flex-wrap" style={{ paddingLeft: '73px' }}>
                   <div className="mb-3">
-<<<<<<< HEAD
                     <button
                       className="btn btn-info "
                       onClick={() => navigate(`/dashboard/admin/detail-question/${q.slug}`)}
                     >
                       Detail Question
                     </button>
-=======
-                    <button className="btn btn-info ">Detail Question</button>
->>>>>>> dev2
                   </div>
                 </div>
               </div>
