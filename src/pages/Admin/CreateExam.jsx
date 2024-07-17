@@ -37,6 +37,8 @@ const CreateExam = () => {
       toast.error('Something went wrong');
     }
   };
+
+  // get all subjects
   const getAllSubjects = async () => {
     try {
       const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
@@ -48,6 +50,8 @@ const CreateExam = () => {
       toast.error('Something went wrong');
     }
   };
+
+  // get all questions
   const getAllQuestion = async () => {
     try {
       const { data } = await axios.get('http://localhost:8080/api/question/get-questions');
