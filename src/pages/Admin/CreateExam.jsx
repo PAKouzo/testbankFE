@@ -189,7 +189,7 @@ const CreateExam = () => {
               <textarea
                 type="text"
                 value={correctChoice}
-                placeholder="Câu trả lời đúng"
+                placeholder="Số câu trả lời đúng để pass test"
                 className="form-control"
                 onChange={(e) => setCorrectChoice(e.target.value)}
               />
