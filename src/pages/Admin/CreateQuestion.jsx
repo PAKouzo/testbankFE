@@ -10,6 +10,7 @@ const { Option } = Select;
 
 const CreateQuestion = () => {
   const [courses, setCourses] = useState([]);
+  const [subjects, setSubjects] = useState('');
   const [subject, setSubject] = useState('');
   const [course, setCourse] = useState('');
   const [topic, setTopic] = useState('');
@@ -38,6 +39,24 @@ const CreateQuestion = () => {
     getAllCourses();
   }, []);
 
+  // get all subjects
+  const getAllSubjects = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
+      if (data.success) {
+        setSubjects(data.subjects);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    getAllSubjects();
+  }, []);
+
+  // handle create
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -90,15 +109,21 @@ const CreateQuestion = () => {
                 </Option>
               ))}
             </Select>
-            <div className="mb-3">
-              <input
-                type="text"
-                value={subject}
-                placeholder="Enter Subject"
-                className="form-control"
-                onChange={(e) => setSubject(e.target.value)}
-              />
-            </div>
+            <Select
+              bordered={false}
+              placeholder="Select Subjects"
+              size="large"
+              showSearch
+              className="form-select mb-3"
+              onChange={(value) => setSubject(value)}
+            >
+              {subjects?.length > 0 &&
+                subjects.map((subject) => (
+                  <Option key={subject._id} value={subject._id}>
+                    {subject.name}
+                  </Option>
+                ))}
+            </Select>
             <div className="mb-3">
               <input
                 type="text"

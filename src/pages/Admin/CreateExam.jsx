@@ -69,6 +69,11 @@ const CreateExam = () => {
     setSelectedQuestions([...selectedQuestions, '']);
   };
 
+  const handleRemoveOption = (index) => {
+    const updatedQuestions = selectedQuestions.filter((_, i) => i !== index);
+    setSelectedQuestions(updatedQuestions);
+  };
+
   const handleQuestionChange = (value, index) => {
     const updatedQuestions = [...selectedQuestions];
     updatedQuestions[index] = value;
@@ -206,29 +211,33 @@ const CreateExam = () => {
             </div>
             <div className="add-question">
               {selectedQuestions.map((selectedQuestion, index) => (
-                <Select
-                  key={index}
-                  bordered={false}
-                  placeholder="Select Questions"
-                  size="large"
-                  showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => handleQuestionChange(value, index)}
-                  value={selectedQuestion}
-                >
-                  {questions?.map((question) => (
-                    <Option key={question._id} value={question._id}>
-                      {question.content}
-                    </Option>
-                  ))}
-                </Select>
+                <div key={index} className="d-flex align-items-center mb-3">
+                  <Select
+                    bordered={false}
+                    placeholder="Select Questions"
+                    size="large"
+                    showSearch
+                    className="form-select"
+                    onChange={(value) => handleQuestionChange(value, index)}
+                    value={selectedQuestion}
+                  >
+                    {questions?.map((question) => (
+                      <Option key={question._id} value={question._id}>
+                        {question.content}
+                      </Option>
+                    ))}
+                  </Select>
+                  <button onClick={() => handleRemoveOption(index)} className="btn btn-danger ms-2">
+                    X
+                  </button>
+                </div>
               ))}
-              <button onClick={handleAddOption} className="bg-primary-subtle">
+              <button onClick={handleAddOption} className="btn btn-primary mb-2">
                 Add Question
               </button>
             </div>
             <div className="mb-3">
-              <button className="btn btn-primary" onClick={handleCreate}>
+              <button className="btn btn-success" onClick={handleCreate}>
                 Create Exam
               </button>
             </div>

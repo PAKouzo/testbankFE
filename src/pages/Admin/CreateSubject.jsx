@@ -3,11 +3,11 @@ import AdminMenu from '../../components/Layout/AdminMenu';
 import Layout from '../../components/Layout/layout';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import CourseForm from '../../components/Form/CourseForm';
+import SubjectForm from '../../components/Form/SubjectForm';
 import { Modal } from 'antd';
 
 const CreateSubject = () => {
-  const [courses, setCourses] = useState();
+  const [subjects, setSubjects] = useState();
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -17,12 +17,12 @@ const CreateSubject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8080/api/subject/create', {
+      const { data } = await axios.post('http://localhost:8080/api/subject/create-subject', {
         name,
       });
       if (data.success) {
         toast.success(`${name} is created`);
-        getAllCourses();
+        getAllSubjects();
       } else {
         toast.error(data.message);
       }
@@ -32,12 +32,12 @@ const CreateSubject = () => {
     }
   };
 
-  // get all courses
-  const getAllCourses = async () => {
+  // get all subjects
+  const getAllSubjects = async () => {
     try {
       const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
       if (data?.success) {
-        setCourses(data?.courses);
+        setSubjects(data?.subjects);
       }
     } catch (error) {
       console.log(error);
@@ -46,10 +46,10 @@ const CreateSubject = () => {
   };
 
   useEffect(() => {
-    getAllCourses();
+    getAllSubjects();
   }, []);
 
-  //update course
+  //update subject
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -63,7 +63,7 @@ const CreateSubject = () => {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
         setVisible(false);
-        getAllCourses();
+        getAllSubjects();
       } else {
         toast.error(data.message);
       }
@@ -73,13 +73,15 @@ const CreateSubject = () => {
     }
   };
 
-  //delete course
+  //delete subject
   const handleDelete = async (cId) => {
     try {
-      const { data } = await axios.delete(`http://localhost:8080/api/subject/delete-subject/${cId}`);
+      const { data } = await axios.delete(
+        `http://localhost:8080/api/subject/delete-subject/${cId}`,
+      );
       if (data.success) {
         toast.success(`${name} is delete`);
-        getAllCourses();
+        getAllSubjects();
       } else {
         toast.error(data.message);
       }
@@ -89,15 +91,15 @@ const CreateSubject = () => {
   };
 
   return (
-    <Layout title="Dashboard - Create Test">
+    <Layout title="Dashboard - Create Subject">
       <div className="row">
         <div className="col-md-3">
           <AdminMenu />
         </div>
         <div className="col-md-9">
-          <h1>Manage Course Or Grade Level</h1>
+          <h1>Manage Subject</h1>
           <div className="p-3 w-50">
-            <CourseForm handleSubmit={handleSubmit} value={name} setValue={setName} />
+            <SubjectForm handleSubmit={handleSubmit} value={name} setValue={setName} />
           </div>
           <div className="w-75">
             <table className="table">
@@ -108,7 +110,7 @@ const CreateSubject = () => {
                 </tr>
               </thead>
               <tbody>
-                {courses?.map((c) => (
+                {subjects?.map((c) => (
                   <>
                     <tr>
                       <td key={c._id}>{c.name}</td>
@@ -139,7 +141,11 @@ const CreateSubject = () => {
             </table>
           </div>
           <Modal onCancel={() => setVisible(false)} footer={null} visible={visible}>
-            <CourseForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
+            <SubjectForm
+              value={updatedName}
+              setValue={setUpdatedName}
+              handleSubmit={handleUpdate}
+            />
           </Modal>
         </div>
       </div>
