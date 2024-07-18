@@ -20,6 +20,7 @@ const CreateExam = () => {
   const [decription, setDecription] = useState('');
   const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
+  const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [selectedQuestions, setSelectedQuestions] = useState(['']);
   const [timeStart, setTimeStart] = useState('');
@@ -89,6 +90,10 @@ const CreateExam = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (selectedQuestions.length === 0 || !selectedQuestions[0]) {
+      toast.error('Please select at least one question');
+      return;
+    }
     try {
       const examData = {
         subject,
@@ -102,7 +107,7 @@ const CreateExam = () => {
         decription,
         accessPassword,
         correctChoice,
-        questions: selectedQuestions,
+        question: selectedQuestions,
       };
 
       const { data } = await axios.post('http://localhost:8080/api/exam/create-exam', examData);
@@ -173,7 +178,7 @@ const CreateExam = () => {
                 onChange={(e) => setTime(e.target.value)}
               />
             </div>
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <input
                 type="text"
                 value={timeStart}
@@ -190,7 +195,7 @@ const CreateExam = () => {
                 className="form-control"
                 onChange={(e) => setTimeEnd(e.target.value)}
               />
-            </div> */}
+            </div>
             <div className="mb-3">
               <input
                 type="text"
