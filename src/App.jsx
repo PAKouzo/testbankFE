@@ -24,12 +24,14 @@ import CreateCourse from './pages/Admin/CreateCourse';
 import Exams from './pages/Admin/Exams';
 import CreateSubject from './pages/Admin/CreateSubject';
 import UpdateExam from './pages/Admin/UpdateExam';
+import Course from './pages/Course';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/course" element={<Course />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<Profile />} />

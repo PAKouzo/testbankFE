@@ -87,6 +87,7 @@ const CreateExam = () => {
     setSelectedQuestions(updatedQuestions);
   };
 
+  //create
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -102,7 +103,7 @@ const CreateExam = () => {
         decription,
         accessPassword,
         correctChoice,
-        questions: selectedQuestions,
+        question: selectedQuestions,
       };
 
       const { data } = await axios.post('http://localhost:8080/api/exam/create-exam', examData);
@@ -173,7 +174,7 @@ const CreateExam = () => {
                 onChange={(e) => setTime(e.target.value)}
               />
             </div>
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <input
                 type="text"
                 value={timeStart}
@@ -190,7 +191,7 @@ const CreateExam = () => {
                 className="form-control"
                 onChange={(e) => setTimeEnd(e.target.value)}
               />
-            </div> */}
+            </div>
             <div className="mb-3">
               <input
                 type="text"

@@ -7,10 +7,9 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Exams = () => {
-  const [exams, setExams] = useState([]);
+  const [exam, setExams] = useState([]);
   const params = useParams();
   const [courses, setCourses] = useState([]);
-  const [id, setId] = useState('');
   const navigate = useNavigate();
 
   //get all exams
@@ -46,7 +45,7 @@ const Exams = () => {
   }, []);
 
   return (
-    <Layout title="Dashboard - All Questions">
+    <Layout title="Dashboard - All Exam">
       <div className="row">
         <div className="col-md-3">
           <AdminMenu />
@@ -54,22 +53,25 @@ const Exams = () => {
         <div className="col-md-9">
           <h1>All Exams</h1>
           <div className="d-flex flex-wrap">
-            {exams?.map((q) => (
+            {exam?.map((e) => (
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
-                  <Link
-                    //errors
-                    className="question-link"
-                  >
-                    <h5 className="card-title">Chủ đề: {q.name}</h5>
-                    <h4 className="card-title">Khóa học: {q.course.name}</h4>
-                    <p className="card-text">Thời gian làm bài: {q.time}</p>
-                    <p className="card-text">Số lần làm bài: {q.accessTime}</p>
+                  <Link key={e.slug} to={`/dashboard/admin/exam/${e.slug}`} className="exam-link">
+                    <h5 className="card-title">Chủ đề: {e.name}</h5>
+                    <h4 className="card-title">Môn Học: {e.subject.name}</h4>
+                    <h4 className="card-title">Khóa học: {e.course.name}</h4>
+                    <p className="card-text">Thời gian làm bài: {e.time}</p>
+                    <p className="card-text">Số lần làm bài: {e.accessTime}</p>
                   </Link>
                 </div>
                 <div className="flex-wrap" style={{ paddingLeft: '73px' }}>
                   <div className="mb-3">
-                    <button className="btn btn-info ">Detail Exams</button>
+                    <button
+                      className="btn btn-info "
+                      onClick={() => navigate(`/dashboard/admin/detail-exam/${e.slug}`)}
+                    >
+                      Detail Question
+                    </button>
                   </div>
                 </div>
               </div>
