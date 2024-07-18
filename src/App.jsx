@@ -25,6 +25,7 @@ import Exams from './pages/Admin/Exams';
 import CreateSubject from './pages/Admin/CreateSubject';
 import UpdateExam from './pages/Admin/UpdateExam';
 import Course from './pages/Course';
+import DetailsQuestion from './pages/Admin/DetailsQuestion';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="admin/create-exams" element={<CreateExam />} />
           <Route path="admin/create-course" element={<CreateCourse />} />
           <Route path="admin/create-subject" element={<CreateSubject />} />
+          <Route path="admin/detail-question/:slug" element={<DetailsQuestion />} />
           <Route path="admin/question/:slug" element={<UpdateQuestion />} />
           <Route path="admin/questions" element={<Questions />} />
           <Route path="admin/exams" element={<Exams />} />

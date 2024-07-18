@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Layout from '../../components/Layout/layout';
 import AdminMenu from '../../components/Layout/AdminMenu';
 import { toast } from 'react-toastify';
@@ -10,11 +10,16 @@ const DetailsQuestion = () => {
   const params = useParams();
   const [question, setQuestions] = useState([]);
   const [content, setContent] = useState('');
-  const [answer, setAnswer] = useState(null);
-  const [answers, setAnswers] = useState();
+  const [answer1, setAnswer1] = useState();
+  const [answer2, setAnswer2] = useState();
+  const [answer3, setAnswer3] = useState();
+  const [answer4, setAnswer4] = useState();
   const [correctAnswer, setCorrectAnswer] = useState();
   const [solution, setSolution] = useState('');
   const [id, setId] = useState('');
+  const [lock, setLock] = useState(false);
+
+  let optionRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   //get single question
   const getSingleQuestion = async () => {
@@ -24,7 +29,10 @@ const DetailsQuestion = () => {
       );
       setId(data.question._id);
       setContent(data.question.content);
-      setAnswers(data.question.answers);
+      setAnswer1(data.question.answer1);
+      setAnswer2(data.question.answer2);
+      setAnswer3(data.question.answer3);
+      setAnswer4(data.question.answer4);
       setCorrectAnswer(data.question.correctAnswer);
       setSolution(data.question.solution);
     } catch (error) {
@@ -38,6 +46,21 @@ const DetailsQuestion = () => {
   }, []);
 
   //correct answer
+  const checkAns = (e, ans) => {
+    if (lock === false) {
+      if (ans === correctAnswer) {
+        e.target.classList.add('Correct');
+        setLock(true);
+      } else {
+        e.target.classList.add('Wrong');
+        setLock(true);
+        alert(`Correct Answer is: ${correctAnswer} and here is solution: ${solution}`);
+        if (correctAnswer > 0 && correctAnswer <= 4) {
+          optionRefs[correctAnswer - 1].current.classList.add('Correct');
+        }
+      }
+    }
+  };
 
   return (
     <Layout title="Dashboard - Details Question">
@@ -47,10 +70,22 @@ const DetailsQuestion = () => {
         </div>
         <div className="col-md-9 details-question">
           <h1>Details Question</h1>
-          <h5 className="card-title">Question: {content}</h5>
-          <h4>Choice: {answers}</h4>
-          <h4 className="correct-answer">Correct Answer: {correctAnswer}</h4>
-          <h4 className="solution">Solution: {solution}</h4>
+          <hr />
+          <h2>Question: {content}</h2>
+          <ul>
+            <li ref={optionRefs[0]} onClick={(e) => checkAns(e, answer1)}>
+              {answer1}
+            </li>
+            <li ref={optionRefs[1]} onClick={(e) => checkAns(e, answer2)}>
+              {answer2}
+            </li>
+            <li ref={optionRefs[2]} onClick={(e) => checkAns(e, answer3)}>
+              {answer3}
+            </li>
+            <li ref={optionRefs[3]} onClick={(e) => checkAns(e, answer4)}>
+              {answer4}
+            </li>
+          </ul>
         </div>
       </div>
     </Layout>

@@ -1,31 +1,53 @@
 .details-question {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 640px;
+  background: white;
+  color: #262626;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 10px;
+  padding: 40px 50px;
 }
 
-.details-question h1 {
-  font-weight: bold;
-  margin-top: 0;
+.details-question hr {
+  height: 2px;
+  border: none;
+  background: #707070;
 }
 
-.details-question .card-title {
-  font-size: 18px;
-  margin-bottom: 10px;
+.details-question h2 {
+  font-size: 27px;
+  font-weight: 500;
 }
 
-.details-question h4 {
-  font-weight: bold;
-  margin-bottom: 10px;
+.details-question ul li {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  padding-left: 15px;
+  border: 1px solid #686868;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  cursor: pointer;
 }
 
-.details-question h4.correct-answer {
-  color: #008000; /* green */
+/* .details-question button {
+  margin: auto;
+  width: 250px;
+  height: 65px;
+  background: #553f9a;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+} */
+
+.Correct {
+  background: green;
 }
 
-.details-question h4.solution {
-  font-style: italic;
-  color: #666;
+.Wrong {
+  background: red;
 }
