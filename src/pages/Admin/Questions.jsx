@@ -10,6 +10,7 @@ const Questions = () => {
   const [question, setQuestions] = useState([]);
   const params = useParams();
   const [courses, setCourses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const navigate = useNavigate();
 
   //get all questions
@@ -44,6 +45,23 @@ const Questions = () => {
     getAllCourses();
   }, []);
 
+  // get all subjects
+  const getAllSubjects = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
+      if (data?.success) {
+        setSubjects(data?.subjects);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    getAllSubjects();
+  }, []);
+
   return (
     <Layout title="Dashboard - All Questions">
       <div className="row">
@@ -61,7 +79,7 @@ const Questions = () => {
                     to={`/dashboard/admin/question/${q.slug}`}
                     className="question-link"
                   >
-                    <h5 className="card-title">Môn học: {q.subject}</h5>
+                    <h5 className="card-title">Môn học: {q.subject.name}</h5>
                     <h4 className="card-title">Khóa học: {q.course.name}</h4>
                     <p className="card-text">Chủ đề: {q.topic}</p>
                     <p className="card-text">Câu hỏi: {q.content}</p>

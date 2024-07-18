@@ -10,14 +10,17 @@ const { Option } = Select;
 
 const CreateQuestion = () => {
   const [courses, setCourses] = useState([]);
-  const [subjects, setSubjects] = useState('');
+  const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
   const [course, setCourse] = useState('');
   const [topic, setTopic] = useState('');
   const [difficulty, setDifficulty] = useState([]);
   const [type, setType] = useState([]);
   const [content, setContent] = useState('');
-  const [answers, setAnswers] = useState('');
+  const [answer1, setAnswer1] = useState('');
+  const [answer2, setAnswer2] = useState('');
+  const [answer3, setAnswer3] = useState('');
+  const [answer4, setAnswer4] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [solution, setSolution] = useState('');
   const navigate = useNavigate();
@@ -67,7 +70,10 @@ const CreateQuestion = () => {
       questionData.append('difficulty', difficulty);
       questionData.append('type', type);
       questionData.append('content', content);
-      questionData.append('answers', answers);
+      questionData.append('answer1', answer1);
+      questionData.append('answer2', answer2);
+      questionData.append('answer3', answer3);
+      questionData.append('answer4', answer4);
       questionData.append('correctAnswer', correctAnswer);
       questionData.append('solution', solution);
       const { data } = axios.post(
@@ -173,10 +179,37 @@ const CreateQuestion = () => {
             <div className="mb-3">
               <textarea
                 type="text"
-                value={answers}
-                placeholder="Enter Answers"
+                value={answer1}
+                placeholder="Enter Option 1"
                 className="form-control"
-                onChange={(e) => setAnswers(e.target.value)}
+                onChange={(e) => setAnswer1(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                type="text"
+                value={answer2}
+                placeholder="Enter Option 2"
+                className="form-control"
+                onChange={(e) => setAnswer2(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                type="text"
+                value={answer3}
+                placeholder="Enter Option 3"
+                className="form-control"
+                onChange={(e) => setAnswer3(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                type="text"
+                value={answer4}
+                placeholder="Enter Option 4"
+                className="form-control"
+                onChange={(e) => setAnswer4(e.target.value)}
               />
             </div>
             <div className="mb-3">
