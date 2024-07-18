@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout/layout';
 import AdminMenu from '../../components/Layout/AdminMenu';
 import axios from 'axios';
-import { Select } from 'antd';
+import { Select, Radio } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -25,6 +25,13 @@ const CreateExam = () => {
   const [selectedQuestions, setSelectedQuestions] = useState(['']);
   const [timeStart, setTimeStart] = useState('');
   const [timeEnd, setTimeEnd] = useState('');
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [newQuestion, setNewQuestion] = useState('');
+  const [newAnswers, setNewAnswers] = useState(['']);
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  const [questionType, setQuestionType] = useState('');
+  const [textInputAnswer, setTextInputAnswer] = useState('');
+  const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -88,7 +95,102 @@ const CreateExam = () => {
     setSelectedQuestions(updatedQuestions);
   };
 
-  //create
+  const handleAddAnswer = () => {
+    setNewAnswers([...newAnswers, '']);
+  };
+
+  const handleRemoveAnswer = (index) => {
+    const updatedAnswers = newAnswers.filter((_, i) => i !== index);
+    setNewAnswers(updatedAnswers);
+  };
+
+  const handleAnswerChange = (value, index) => {
+    const updatedAnswers = [...newAnswers];
+    updatedAnswers[index] = value;
+    setNewAnswers(updatedAnswers);
+  };
+
+  const handleCreateQuestion = async (e) => {
+    e.preventDefault();
+    if (!newQuestion || !questionType) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    let questionData = {
+      content: newQuestion,
+      type: questionType,
+    };
+
+    switch (questionType) {
+      case 'Choice':
+        if (newAnswers.length !== 4 || correctAnswerIndex === null) {
+          toast.error('Please provide 4 answers and select the correct one for Choice type');
+          return;
+        }
+        questionData.answers = newAnswers;
+        questionData.correctAnswerIndex = correctAnswerIndex;
+        break;
+      case 'Multi-Choice':
+        if (newAnswers.length === 0 || multiChoiceCorrectAnswers.length === 0) {
+          toast.error('Please provide answers and select correct ones for Multi-Choice type');
+          return;
+        }
+        questionData.answers = newAnswers;
+        questionData.correctAnswers = multiChoiceCorrectAnswers;
+        break;
+      case 'Text-Input':
+        if (!textInputAnswer) {
+          toast.error('Please provide the correct answer for Text-Input type');
+          return;
+        }
+        questionData.correctAnswer = textInputAnswer;
+        break;
+      default:
+        toast.error('Invalid question type');
+        return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        'http://localhost:8080/api/question/create-question',
+        questionData,
+      );
+      if (data?.success) {
+        toast.success('Question Created Successfully');
+        setQuestions([...questions, data.question]);
+        setShowQuestionForm(false);
+        resetQuestionForm();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  const resetQuestionForm = () => {
+    setNewQuestion('');
+    setNewAnswers(['', '', '', '']);
+    setCorrectAnswerIndex(null);
+    setQuestionType('');
+    setTextInputAnswer('');
+    setMultiChoiceCorrectAnswers([]);
+  };
+  const handleQuestionTypeChange = (value) => {
+    setQuestionType(value);
+    if (value === 'Choice') {
+      setNewAnswers(['', '', '', '']);
+    } else {
+      setNewAnswers(['']);
+    }
+    setCorrectAnswerIndex(null);
+    setMultiChoiceCorrectAnswers([]);
+  };
+
+
+  //create exam
   const handleCreate = async (e) => {
     e.preventDefault();
     if (selectedQuestions.length === 0 || !selectedQuestions[0]) {
@@ -266,9 +368,154 @@ const CreateExam = () => {
                 </div>
               ))}
               <button onClick={handleAddOption} className="btn btn-primary mb-2">
-                Add Question
+                Add Available Questions
+              </button>
+              <button
+                onClick={() => setShowQuestionForm(!showQuestionForm)}
+                className="btn btn-primary mb-2 ms-2"
+              >
+                Input Questions
               </button>
             </div>
+            {showQuestionForm && (
+              <div className="question-form">
+                <div className="mb-3">
+                  <Select
+                    bordered={false}
+                    placeholder="Select Subjects"
+                    size="large"
+                    showSearch
+                    className="form-select mb-3"
+                    onChange={(value) => setSubject(value)}
+                  >
+                    {subjects?.map((subject) => (
+                      <Option key={subject._id} value={subject._id}>
+                        {subject.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <Select
+                    bordered={false}
+                    placeholder="Select Course Or Grade Level"
+                    size="large"
+                    showSearch
+                    className="form-select mb-3"
+                    onChange={(value) => setCourse(value)}
+                  >
+                    {courses?.map((course) => (
+                      <Option key={course._id} value={course._id}>
+                        {course.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <Select
+                    bordered={false}
+                    placeholder="Select Question Type"
+                    size="large"
+                    className="form-select"
+                    onChange={handleQuestionTypeChange}
+                  >
+                    <Option value="Choice">Choice</Option>
+                    <Option value="Multi-Choice">Multi-Choice</Option>
+                    <Option value="Text-Input">Text-Input</Option>
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    value={newQuestion}
+                    placeholder="Question"
+                    className="form-control"
+                    onChange={(e) => setNewQuestion(e.target.value)}
+                  />
+                </div>
+                {questionType === 'Choice' && (
+                  <>
+                    {newAnswers.map((answer, index) => (
+                      <div key={index} className="d-flex align-items-center mb-3">
+                        <input
+                          type="text"
+                          value={answer}
+                          placeholder={`Answer ${index + 1}`}
+                          className="form-control"
+                          onChange={(e) => handleAnswerChange(e.target.value, index)}
+                        />
+                      </div>
+                    ))}
+                    <div className="mb-3">
+                      <Radio.Group
+                        onChange={(e) => setCorrectAnswerIndex(e.target.value)}
+                        value={correctAnswerIndex}
+                      >
+                        {newAnswers.map((_, index) => (
+                          <Radio key={index} value={index}>
+                            Answer {index + 1} is correct
+                          </Radio>
+                        ))}
+                      </Radio.Group>
+                    </div>
+                  </>
+                )}
+                {questionType === 'Multi-Choice' && (
+                  <>
+                    {newAnswers.map((answer, index) => (
+                      <div key={index} className="d-flex align-items-center mb-3">
+                        <input
+                          type="text"
+                          value={answer}
+                          placeholder={`Answer ${index + 1}`}
+                          className="form-control"
+                          onChange={(e) => handleAnswerChange(e.target.value, index)}
+                        />
+                        <button
+                          onClick={() => handleRemoveAnswer(index)}
+                          className="btn btn-danger ms-2"
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                    <button onClick={handleAddAnswer} className="btn btn-primary mb-2">
+                      Add Answer
+                    </button>
+                    <div className="mb-3">
+                      <Select
+                        bordered={false}
+                        placeholder="Select Correct Answers"
+                        size="large"
+                        className="form-select"
+                        mode="multiple"
+                        onChange={(values) => setMultiChoiceCorrectAnswers(values)}
+                      >
+                        {newAnswers.map((_, index) => (
+                          <Option key={index} value={index}>
+                            Answer {index + 1}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  </>
+                )}
+                {questionType === 'Text-Input' && (
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      value={textInputAnswer}
+                      placeholder="Correct Answer"
+                      className="form-control"
+                      onChange={(e) => setTextInputAnswer(e.target.value)}
+                    />
+                  </div>
+                )}
+                <button onClick={handleCreateQuestion} className="btn btn-success mb-2">
+                  Create Question
+                </button>
+              </div>
+            )}
             <div className="mb-3">
               <button className="btn btn-success" onClick={handleCreate}>
                 Create Exam
