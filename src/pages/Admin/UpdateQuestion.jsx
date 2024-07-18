@@ -18,6 +18,7 @@ const UpdateQuestion = () => {
   const [difficulty, setDifficulty] = useState([]);
   const [type, setType] = useState([]);
   const [content, setContent] = useState('');
+  const [answer, setAnswer] = useState('');
   const [answer1, setAnswer1] = useState('');
   const [answer2, setAnswer2] = useState('');
   const [answer3, setAnswer3] = useState('');
@@ -40,12 +41,16 @@ const UpdateQuestion = () => {
       setDifficulty(data.question.difficulty);
       setType(data.question.type);
       setContent(data.question.content);
-      setAnswer1(data.question.answer1);
-      setAnswer2(data.question.answer2);
-      setAnswer3(data.question.answer3);
-      setAnswer4(data.question.answer4);
-      setCorrectAnswer(data.question.correctAnswer);
       setSolution(data.question.solution);
+      if (data.question.type === 'Text-Input') {
+        setAnswer(data.question.answer);
+      } else if (data.question.type === 'Choice' || data.question.type === 'Multi-Choice') {
+        setAnswer1(data.question.answer1);
+        setAnswer2(data.question.answer2);
+        setAnswer3(data.question.answer3);
+        setAnswer4(data.question.answer4);
+      }
+      setCorrectAnswer(data.question.correctAnswer);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
@@ -101,12 +106,17 @@ const UpdateQuestion = () => {
       questionData.append('difficulty', difficulty);
       questionData.append('type', type);
       questionData.append('content', content);
-      questionData.append('answer1', answer1);
-      questionData.append('answer2', answer2);
-      questionData.append('answer3', answer3);
-      questionData.append('answer4', answer4);
-      questionData.append('correctAnswer', correctAnswer);
       questionData.append('solution', solution);
+      if (type === 'Text-Input') {
+        questionData.answer = answer;
+        questionData.correctAnswer = correctAnswer;
+      } else if (type === 'Choice' || type === 'Multi-Choice') {
+        questionData.answer1 = answer1;
+        questionData.answer2 = answer2;
+        questionData.answer3 = answer3;
+        questionData.answer4 = answer4;
+        questionData.correctAnswer = correctAnswer;
+      }
       const { data } = axios.put(
         `http://localhost:8080/api/question/update-question/${id}`,
         questionData,
@@ -149,13 +159,18 @@ const UpdateQuestion = () => {
         difficulty,
         type,
         content,
-        answer1,
-        answer2,
-        answer3,
-        answer4,
-        correctAnswer,
         solution,
       };
+      if (type === 'Text-Input') {
+        questionData.answer = answer;
+        questionData.correctAnswer = correctAnswer;
+      } else if (type === 'Choice' || type === 'Multi-Choice') {
+        questionData.answer1 = answer1;
+        questionData.answer2 = answer2;
+        questionData.answer3 = answer3;
+        questionData.answer4 = answer4;
+        questionData.correctAnswer = correctAnswer;
+      }
       const { data } = await axios.post(
         `http://localhost:8080/api/question/duplicate-question/${id}`,
         newDuplicateQuestion,
@@ -182,18 +197,16 @@ const UpdateQuestion = () => {
           <div className="m-1 w-75">
             <Select
               bordered={false}
-              placeholder="Select Course or Grade Level"
+              placeholder="Select Course"
               size="large"
               showSearch
               className="form-select mb-3"
-              onChange={(value) => {
-                setCourse(value);
-              }}
+              onChange={(value) => setCourse(value)}
               value={course}
             >
-              {courses?.map((c) => (
-                <Option key={c._id} value={c._id}>
-                  {c.name}
+              {courses.map((course) => (
+                <Option key={course._id} value={course._id}>
+                  {course.name}
                 </Option>
               ))}
             </Select>
@@ -203,14 +216,12 @@ const UpdateQuestion = () => {
               size="large"
               showSearch
               className="form-select mb-3"
-              onChange={(value) => {
-                setSubject(value);
-              }}
+              onChange={(value) => setSubject(value)}
               value={subject}
             >
-              {subjects?.map((s) => (
-                <Option key={s._id} value={s._id}>
-                  {s.name}
+              {subjects.map((subject) => (
+                <Option key={subject._id} value={subject._id}>
+                  {subject.name}
                 </Option>
               ))}
             </Select>
@@ -228,16 +239,9 @@ const UpdateQuestion = () => {
                 bordered={false}
                 size="large"
                 placeholder="Select Difficulty"
-                showSearch
                 className="form-control"
                 onChange={(value) => setDifficulty(value)}
-                value={
-                  difficulty === 'Identification'
-                    ? 'Identification'
-                    : difficulty
-                    ? 'Understanding'
-                    : 'Applying'
-                }
+                value={difficulty}
               >
                 <Option value="Identification">Identification</Option>
                 <Option value="Understanding">Understanding</Option>
@@ -248,71 +252,77 @@ const UpdateQuestion = () => {
               <Select
                 bordered={false}
                 size="large"
-                showSearch
                 placeholder="Select Type"
                 className="form-control"
                 onChange={(value) => setType(value)}
-                value={
-                  type === 'Choice'
-                    ? 'Choice'
-                    : type === 'Multi-Choice'
-                    ? 'Multi-Choice'
-                    : 'Text-Input'
-                }
+                value={type}
               >
+                <Option value="Text-Input">Text-Input</Option>
                 <Option value="Choice">Choice</Option>
                 <Option value="Multi-Choice">Multi-Choice</Option>
-                <Option value="Text-Input">Text-Input</Option>
               </Select>
             </div>
             <div className="mb-3">
               <textarea
-                type="text"
                 value={content}
                 placeholder="Enter Content"
                 className="form-control"
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
+
+            {type === 'Text-Input' && (
+              <>
+                <div className="mb-3">
+                  <textarea
+                    value={answer}
+                    placeholder="Enter Answer"
+                    className="form-control"
+                    onChange={(e) => setAnswer(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            {(type === 'Choice' || type === 'Multi-Choice') && (
+              <>
+                <div className="mb-3">
+                  <textarea
+                    value={answer1}
+                    placeholder="Enter Option 1"
+                    className="form-control"
+                    onChange={(e) => setAnswer1(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer2}
+                    placeholder="Enter Option 2"
+                    className="form-control"
+                    onChange={(e) => setAnswer2(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer3}
+                    placeholder="Enter Option 3"
+                    className="form-control"
+                    onChange={(e) => setAnswer3(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer4}
+                    placeholder="Enter Option 4"
+                    className="form-control"
+                    onChange={(e) => setAnswer4(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
             <div className="mb-3">
               <textarea
-                type="text"
-                value={answer1}
-                placeholder="Enter Option 1"
-                className="form-control"
-                onChange={(e) => setAnswer1(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={answer2}
-                placeholder="Enter Option 2"
-                className="form-control"
-                onChange={(e) => setAnswer2(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={answer3}
-                placeholder="Enter Option 3"
-                className="form-control"
-                onChange={(e) => setAnswer3(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={answer4}
-                placeholder="Enter Option 4"
-                className="form-control"
-                onChange={(e) => setAnswer4(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
                 value={correctAnswer}
                 placeholder="Enter Correct Answer"
                 className="form-control"
@@ -321,7 +331,6 @@ const UpdateQuestion = () => {
             </div>
             <div className="mb-3">
               <textarea
-                type="text"
                 value={solution}
                 placeholder="Enter Solution"
                 className="form-control"

@@ -10,6 +10,7 @@ const DetailsQuestion = () => {
   const params = useParams();
   const [question, setQuestions] = useState([]);
   const [content, setContent] = useState('');
+  const [answer, setAnswer] = useState();
   const [answer1, setAnswer1] = useState();
   const [answer2, setAnswer2] = useState();
   const [answer3, setAnswer3] = useState();
@@ -29,17 +30,25 @@ const DetailsQuestion = () => {
       );
       setId(data.question._id);
       setContent(data.question.content);
-      setAnswer1(data.question.answer1);
-      setAnswer2(data.question.answer2);
-      setAnswer3(data.question.answer3);
-      setAnswer4(data.question.answer4);
-      setCorrectAnswer(data.question.correctAnswer);
       setSolution(data.question.solution);
+      if (data.question.type === 'Text-Input') {
+        setAnswer(data.question.answer);
+      } else if (data.question.type === 'Choice' || data.question.type === 'Multi-Choice') {
+        setAnswer1(data.question.answer1);
+        setAnswer2(data.question.answer2);
+        setAnswer3(data.question.answer3);
+        setAnswer4(data.question.answer4);
+      }
+      setCorrectAnswer(data.question.correctAnswer);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
     }
   };
+
+  useEffect(() => {
+    getSingleQuestion();
+  }, []);
 
   useEffect(() => {
     getSingleQuestion();
