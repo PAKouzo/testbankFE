@@ -20,6 +20,7 @@ const CreateExam = () => {
   const [decription, setDecription] = useState('');
   const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
+  const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [selectedQuestions, setSelectedQuestions] = useState(['']);
   const [timeStart, setTimeStart] = useState('');
@@ -90,6 +91,10 @@ const CreateExam = () => {
   //create
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (selectedQuestions.length === 0 || !selectedQuestions[0]) {
+      toast.error('Please select at least one question');
+      return;
+    }
     try {
       const examData = {
         subject,
