@@ -32,7 +32,9 @@ const CreateExam = () => {
   const [questionType, setQuestionType] = useState('');
   const [textInputAnswer, setTextInputAnswer] = useState('');
   const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
-
+  const [topic, setTopic] = useState('');
+  const [difficulty, setDifficulty] = useState([]);
+  
   const navigate = useNavigate();
 
   // get all courses
@@ -409,6 +411,29 @@ const CreateExam = () => {
                         {course.name}
                       </Option>
                     ))}
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    value={topic}
+                    placeholder="Enter Topic"
+                    className="form-control"
+                    onChange={(e) => setTopic(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Select
+                    bordered={false}
+                    size="large"
+                    placeholder="Select Difficulty"
+                    showSearch
+                    className="form-control"
+                    onChange={(value) => setDifficulty(value)}
+                  >
+                    <Option value="Identification">Identification</Option>
+                    <Option value="Understanding">Understanding</Option>
+                    <Option value="Applying">Applying</Option>
                   </Select>
                 </div>
                 <div className="mb-3">
