@@ -26,12 +26,16 @@ import CreateSubject from './pages/Admin/CreateSubject';
 import UpdateExam from './pages/Admin/UpdateExam';
 import Course from './pages/Course';
 import DetailsQuestion from './pages/Admin/DetailsQuestion';
+import ExamDetail from './pages/ExamDetail';
+import DoExam from './pages/DoExam';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/exam/:_id" element={<ExamDetail />} />
+        <Route path="/do-exam/:_id" element={<DoExam />} />
         <Route path="/course" element={<Course />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
@@ -48,7 +52,7 @@ function App() {
           <Route path="admin/question/:_id" element={<UpdateQuestion />} />
           <Route path="admin/questions" element={<Questions />} />
           <Route path="admin/exams" element={<Exams />} />
-          <Route path="admin/exam/:slug" element={<UpdateExam />} />
+          <Route path="admin/exam/:_id" element={<UpdateExam />} />
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />

@@ -1,0 +1,25 @@
+.choice {
+  margin-top: 10px;
+}
+
+.choice div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.choice label {
+  margin-left: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.timer {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #e7f1ff;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #007bff;
+  text-align: center;
+}
