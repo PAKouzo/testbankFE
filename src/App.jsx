@@ -44,8 +44,8 @@ function App() {
           <Route path="admin/create-exams" element={<CreateExam />} />
           <Route path="admin/create-course" element={<CreateCourse />} />
           <Route path="admin/create-subject" element={<CreateSubject />} />
-          <Route path="admin/detail-question/:slug" element={<DetailsQuestion />} />
-          <Route path="admin/question/:slug" element={<UpdateQuestion />} />
+          <Route path="admin/detail-question/:_id" element={<DetailsQuestion />} />
+          <Route path="admin/question/:_id" element={<UpdateQuestion />} />
           <Route path="admin/questions" element={<Questions />} />
           <Route path="admin/exams" element={<Exams />} />
           <Route path="admin/exam/:slug" element={<UpdateExam />} />
