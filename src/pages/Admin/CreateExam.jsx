@@ -34,7 +34,7 @@ const CreateExam = () => {
   const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
   const [topic, setTopic] = useState('');
   const [difficulty, setDifficulty] = useState([]);
-  
+
   const navigate = useNavigate();
 
   // get all courses
@@ -120,6 +120,9 @@ const CreateExam = () => {
     }
 
     let questionData = {
+      subject: subject,
+      course: course,
+      topic: topic,
       content: newQuestion,
       type: questionType,
     };
@@ -153,23 +156,25 @@ const CreateExam = () => {
         return;
     }
 
-    try {
-      const { data } = await axios.post(
-        'http://localhost:8080/api/question/create-question',
-        questionData,
-      );
-      if (data?.success) {
-        toast.success('Question Created Successfully');
-        setQuestions([...questions, data.question]);
-        setShowQuestionForm(false);
-        resetQuestionForm();
-      } else {
-        toast.error(data?.message);
+      try {
+        const { data } = await axios.post(
+          'http://localhost:8080/api/question/create-question',
+          questionData,
+          console.log(questionData)
+        );
+        if (data?.success) {
+          toast.success('Question Created Successfully');
+          setQuestions([...questions, data.question]);
+          setShowQuestionForm(false);
+          resetQuestionForm();
+        } else {
+          toast.error(data?.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error('Something went wrong');
       }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
+      return null;
   };
 
   const resetQuestionForm = () => {
@@ -212,7 +217,7 @@ const CreateExam = () => {
         decription,
         accessPassword,
         correctChoice,
-        question: selectedQuestions,
+        question: selectedQuestions
       };
 
       const { data } = await axios.post('http://localhost:8080/api/exam/create-exam', examData);
