@@ -9,7 +9,6 @@ import { toast } from 'react-hot-toast';
 const { Option } = Select;
 
 const UpdateQuestion = () => {
-  const params = useParams();
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
@@ -26,14 +25,13 @@ const UpdateQuestion = () => {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [solution, setSolution] = useState('');
   const [id, setId] = useState('');
+  const { _id } = useParams();
   const navigate = useNavigate();
 
   //get single question
   const getSingleQuestion = async () => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:8080/api/question/get-question/${params.slug}`,
-      );
+      const { data } = await axios.get(`http://localhost:8080/api/question/get-question/${_id}`);
       setId(data.question._id);
       setCourse(data.question.course._id);
       setSubject(data.question.subject._id);

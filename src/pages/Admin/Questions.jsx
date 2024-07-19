@@ -75,8 +75,8 @@ const Questions = () => {
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
                   <Link
-                    key={q.slug}
-                    to={`/dashboard/admin/question/${q.slug}`}
+                    key={q._id}
+                    to={`/dashboard/admin/question/${q._id}`}
                     className="question-link"
                   >
                     <h5 className="card-title">Môn học: {q.subject.name}</h5>
@@ -89,7 +89,7 @@ const Questions = () => {
                   <div className="mb-3">
                     <button
                       className="btn btn-info "
-                      onClick={() => navigate(`/dashboard/admin/detail-question/${q.slug}`)}
+                      onClick={() => navigate(`/dashboard/admin/detail-question/${q._id}`)}
                     >
                       Detail Question
                     </button>

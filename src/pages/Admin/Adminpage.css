@@ -51,3 +51,27 @@
 .Wrong {
   background: red;
 }
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.text-input input {
+  padding: 10px;
+  border: 1px solid #686868;
+  border-radius: 8px;
+}
+
+.text-input button {
+  margin: auto;
+  width: 250px;
+  height: 65px;
+  background: #553f9a;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+}
