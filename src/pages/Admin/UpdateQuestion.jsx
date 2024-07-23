@@ -23,6 +23,7 @@ const UpdateQuestion = () => {
   const [answer3, setAnswer3] = useState('');
   const [answer4, setAnswer4] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
+  const [correctAnswer1, setCorrectAnswer1] = useState('');
   const [solution, setSolution] = useState('');
   const [id, setId] = useState('');
   const { _id } = useParams();
@@ -40,15 +41,24 @@ const UpdateQuestion = () => {
       setType(data.question.type);
       setContent(data.question.content);
       setSolution(data.question.solution);
+
       if (data.question.type === 'Text-Input') {
-        setAnswer(data.question.answer);
-      } else if (data.question.type === 'Choice' || data.question.type === 'Multi-Choice') {
+        setCorrectAnswer(data.question.correctAnswer);
+      } else if (data.question.type === 'Choice') {
         setAnswer1(data.question.answer1);
         setAnswer2(data.question.answer2);
         setAnswer3(data.question.answer3);
         setAnswer4(data.question.answer4);
+        setCorrectAnswer(data.question.correctAnswer);
+      } else if (data.question.type === 'Multi-Choice') {
+        setAnswer(data.question.answer);
+        setAnswer1(data.question.answer1);
+        setAnswer2(data.question.answer2);
+        setAnswer3(data.question.answer3);
+        setAnswer4(data.question.answer4);
+        setCorrectAnswer(data.question.correctAnswer);
+        setCorrectAnswer1(data.question.correctAnswer1);
       }
-      setCorrectAnswer(data.question.correctAnswer);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
@@ -106,14 +116,21 @@ const UpdateQuestion = () => {
       questionData.append('content', content);
       questionData.append('solution', solution);
       if (type === 'Text-Input') {
-        questionData.answer = answer;
-        questionData.correctAnswer = correctAnswer;
-      } else if (type === 'Choice' || type === 'Multi-Choice') {
-        questionData.answer1 = answer1;
-        questionData.answer2 = answer2;
-        questionData.answer3 = answer3;
-        questionData.answer4 = answer4;
-        questionData.correctAnswer = correctAnswer;
+        questionData.append('correctAnswer', correctAnswer);
+      } else if (type === 'Choice') {
+        questionData.append('answer1', answer1);
+        questionData.append('answer2', answer2);
+        questionData.append('answer3', answer3);
+        questionData.append('answer4', answer4);
+        questionData.append('correctAnswer', correctAnswer);
+      } else if (type === 'Multi-Choice') {
+        questionData.append('answer', answer);
+        questionData.append('answer1', answer1);
+        questionData.append('answer2', answer2);
+        questionData.append('answer3', answer3);
+        questionData.append('answer4', answer4);
+        questionData.append('correctAnswer', correctAnswer);
+        questionData.append('correctAnswer1', correctAnswer1);
       }
       const { data } = axios.put(
         `http://localhost:8080/api/question/update-question/${id}`,
@@ -160,14 +177,21 @@ const UpdateQuestion = () => {
         solution,
       };
       if (type === 'Text-Input') {
-        questionData.answer = answer;
-        questionData.correctAnswer = correctAnswer;
-      } else if (type === 'Choice' || type === 'Multi-Choice') {
-        questionData.answer1 = answer1;
-        questionData.answer2 = answer2;
-        questionData.answer3 = answer3;
-        questionData.answer4 = answer4;
-        questionData.correctAnswer = correctAnswer;
+        newDuplicateQuestion.correctAnswer = correctAnswer;
+      } else if (type === 'Choice') {
+        newDuplicateQuestion.answer1 = answer1;
+        newDuplicateQuestion.answer2 = answer2;
+        newDuplicateQuestion.answer3 = answer3;
+        newDuplicateQuestion.answer4 = answer4;
+        newDuplicateQuestion.correctAnswer = correctAnswer;
+      } else if (type === 'Multi-Choice') {
+        newDuplicateQuestion.answer = answer;
+        newDuplicateQuestion.answer1 = answer1;
+        newDuplicateQuestion.answer2 = answer2;
+        newDuplicateQuestion.answer3 = answer3;
+        newDuplicateQuestion.answer4 = answer4;
+        newDuplicateQuestion.correctAnswer = correctAnswer;
+        newDuplicateQuestion.correctAnswer1 = correctAnswer1;
       }
       const { data } = await axios.post(
         `http://localhost:8080/api/question/duplicate-question/${id}`,
@@ -177,6 +201,7 @@ const UpdateQuestion = () => {
         toast.error(data?.message);
       } else {
         toast.success('Question Duplicated Successfully');
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -273,16 +298,77 @@ const UpdateQuestion = () => {
               <>
                 <div className="mb-3">
                   <textarea
-                    value={answer}
-                    placeholder="Enter Answer"
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
                     className="form-control"
-                    onChange={(e) => setAnswer(e.target.value)}
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
                   />
                 </div>
               </>
             )}
 
-            {(type === 'Choice' || type === 'Multi-Choice') && (
+            {type === 'Multi-Choice' && (
+              <>
+                <div className="mb-3">
+                  <textarea
+                    value={answer}
+                    placeholder="Enter Option 1"
+                    className="form-control"
+                    onChange={(e) => setAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer1}
+                    placeholder="Enter Option 2"
+                    className="form-control"
+                    onChange={(e) => setAnswer1(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer2}
+                    placeholder="Enter Option 3"
+                    className="form-control"
+                    onChange={(e) => setAnswer2(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer3}
+                    placeholder="Enter Option 4"
+                    className="form-control"
+                    onChange={(e) => setAnswer3(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer4}
+                    placeholder="Enter Option 5"
+                    className="form-control"
+                    onChange={(e) => setAnswer4(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer1}
+                    placeholder="Enter Another Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer1(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            {type === 'Choice' && (
               <>
                 <div className="mb-3">
                   <textarea
@@ -316,17 +402,17 @@ const UpdateQuestion = () => {
                     onChange={(e) => setAnswer4(e.target.value)}
                   />
                 </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                  />
+                </div>
               </>
             )}
 
-            <div className="mb-3">
-              <textarea
-                value={correctAnswer}
-                placeholder="Enter Correct Answer"
-                className="form-control"
-                onChange={(e) => setCorrectAnswer(e.target.value)}
-              />
-            </div>
             <div className="mb-3">
               <textarea
                 value={solution}

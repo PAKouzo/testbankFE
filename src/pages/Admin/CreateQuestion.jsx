@@ -23,6 +23,7 @@ const CreateQuestion = () => {
   const [answer3, setAnswer3] = useState('');
   const [answer4, setAnswer4] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
+  const [correctAnswer1, setCorrectAnswer1] = useState('');
   const [solution, setSolution] = useState('');
   const navigate = useNavigate();
 
@@ -74,14 +75,21 @@ const CreateQuestion = () => {
       questionData.append('solution', solution);
 
       if (type === 'Text-Input') {
-        questionData.append('answer', answer);
         questionData.append('correctAnswer', correctAnswer);
-      } else if (type === 'Choice' || type === 'Multi-Choice') {
+      } else if (type === 'Choice') {
         questionData.append('answer1', answer1);
         questionData.append('answer2', answer2);
         questionData.append('answer3', answer3);
         questionData.append('answer4', answer4);
         questionData.append('correctAnswer', correctAnswer);
+      } else if (type === 'Multi-Choice') {
+        questionData.append('answer', answer);
+        questionData.append('answer1', answer1);
+        questionData.append('answer2', answer2);
+        questionData.append('answer3', answer3);
+        questionData.append('answer4', answer4);
+        questionData.append('correctAnswer', correctAnswer);
+        questionData.append('correctAnswer1', correctAnswer1);
       }
 
       const { data } = await axios.post(
@@ -186,16 +194,77 @@ const CreateQuestion = () => {
               <>
                 <div className="mb-3">
                   <textarea
-                    value={answer}
-                    placeholder="Enter Answer"
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
                     className="form-control"
-                    onChange={(e) => setAnswer(e.target.value)}
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
                   />
                 </div>
               </>
             )}
 
-            {(type === 'Choice' || type === 'Multi-Choice') && (
+            {type === 'Multi-Choice' && (
+              <>
+                <div className="mb-3">
+                  <textarea
+                    value={answer}
+                    placeholder="Enter Option 1"
+                    className="form-control"
+                    onChange={(e) => setAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer1}
+                    placeholder="Enter Option 2"
+                    className="form-control"
+                    onChange={(e) => setAnswer1(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer2}
+                    placeholder="Enter Option 3"
+                    className="form-control"
+                    onChange={(e) => setAnswer2(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer3}
+                    placeholder="Enter Option 4"
+                    className="form-control"
+                    onChange={(e) => setAnswer3(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={answer4}
+                    placeholder="Enter Option 5"
+                    className="form-control"
+                    onChange={(e) => setAnswer4(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer1}
+                    placeholder="Enter Another Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer1(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            {type === 'Choice' && (
               <>
                 <div className="mb-3">
                   <textarea
@@ -229,17 +298,17 @@ const CreateQuestion = () => {
                     onChange={(e) => setAnswer4(e.target.value)}
                   />
                 </div>
+                <div className="mb-3">
+                  <textarea
+                    value={correctAnswer}
+                    placeholder="Enter Correct Answer"
+                    className="form-control"
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                  />
+                </div>
               </>
             )}
 
-            <div className="mb-3">
-              <textarea
-                value={correctAnswer}
-                placeholder="Enter Correct Answer"
-                className="form-control"
-                onChange={(e) => setCorrectAnswer(e.target.value)}
-              />
-            </div>
             <div className="mb-3">
               <textarea
                 value={solution}
