@@ -5,7 +5,8 @@ import axios from 'axios';
 import { Select, Radio } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import QuestionForm from '../../components/Form/QuestionForm';
+import './CreateExam.css'
 const { Option } = Select;
 
 const CreateExam = () => {
@@ -20,20 +21,20 @@ const CreateExam = () => {
   const [decription, setDecription] = useState('');
   const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
-  const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
-  const [selectedQuestions, setSelectedQuestions] = useState(['']);
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [timeStart, setTimeStart] = useState('');
   const [timeEnd, setTimeEnd] = useState('');
-  const [showQuestionForm, setShowQuestionForm] = useState(false);
-  const [newQuestion, setNewQuestion] = useState('');
-  const [newAnswers, setNewAnswers] = useState(['']);
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
-  const [questionType, setQuestionType] = useState('');
-  const [textInputAnswer, setTextInputAnswer] = useState('');
-  const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
-  const [topic, setTopic] = useState('');
-  const [difficulty, setDifficulty] = useState([]);
+  const [showCreateQuestion, setShowCreateQuestion] = useState(false);
+  // const [question, setQuestion] = useState([]);
+  // const [newQuestion, setNewQuestion] = useState('');
+  // const [newAnswers, setNewAnswers] = useState(['']);
+  // const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  // const [questionType, setQuestionType] = useState('');
+  // const [textInputAnswer, setTextInputAnswer] = useState('');
+  // const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
+  // const [topic, setTopic] = useState('');
+  // const [difficulty, setDifficulty] = useState([]);
 
   const navigate = useNavigate();
 
@@ -90,6 +91,19 @@ const CreateExam = () => {
     const updatedQuestions = selectedQuestions.filter((_, i) => i !== index);
     setSelectedQuestions(updatedQuestions);
   };
+  const handleQuestionCreated = (newQuestion) => {
+    // if (newQuestion && newQuestion._id) {
+    //   setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+    //   console.log('Câu hỏi mới:', newQuestion);
+    //   getAllQuestion();
+    // } else {
+    //   console.error('Câu hỏi mới không hợp lệ:', newQuestion);
+    //   toast.error('Không thể tạo câu hỏi mới. Vui lòng thử lại.');
+    // }
+    setQuestions((questions) => [...questions, newQuestion]);
+    console.log('New question:', newQuestion);
+    getAllQuestion();
+  };
 
   const handleQuestionChange = (value, index) => {
     const updatedQuestions = [...selectedQuestions];
@@ -97,105 +111,106 @@ const CreateExam = () => {
     setSelectedQuestions(updatedQuestions);
   };
 
-  const handleAddAnswer = () => {
-    setNewAnswers([...newAnswers, '']);
-  };
+  // const handleAddAnswer = () => {
+  //   setNewAnswers([...newAnswers, '']);
+  // };
 
-  const handleRemoveAnswer = (index) => {
-    const updatedAnswers = newAnswers.filter((_, i) => i !== index);
-    setNewAnswers(updatedAnswers);
-  };
+  // const handleRemoveAnswer = (index) => {
+  //   const updatedAnswers = newAnswers.filter((_, i) => i !== index);
+  //   setNewAnswers(updatedAnswers);
+  // };
 
-  const handleAnswerChange = (value, index) => {
-    const updatedAnswers = [...newAnswers];
-    updatedAnswers[index] = value;
-    setNewAnswers(updatedAnswers);
-  };
+  // const handleAnswerChange = (value, index) => {
+  //   const updatedAnswers = [...newAnswers];
+  //   updatedAnswers[index] = value;
+  //   setNewAnswers(updatedAnswers);
+  // };
 
-  const handleCreateQuestion = async (e) => {
-    e.preventDefault();
-    if (!newQuestion || !questionType) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
+  // const handleCreateQuestion = async (e) => {
+  //   e.preventDefault();
+  //   if (!newQuestion || !questionType) {
+  //     toast.error('Please fill in all required fields');
+  //     return;
+  //   }
 
-    let questionData = {
-      subject: subject,
-      course: course,
-      topic: topic,
-      content: newQuestion,
-      type: questionType,
-    };
+  //   let questionData = {
+  //     subject: subject,
+  //     course: course,
+  //     topic: topic,
+  //     content: newQuestion,
+  //     type: questionType,
+  //     difficulty: difficulty,
+  //   };
 
-    switch (questionType) {
-      case 'Choice':
-        if (newAnswers.length !== 4 || correctAnswerIndex === null) {
-          toast.error('Please provide 4 answers and select the correct one for Choice type');
-          return;
-        }
-        questionData.answers = newAnswers;
-        questionData.correctAnswerIndex = correctAnswerIndex;
-        break;
-      case 'Multi-Choice':
-        if (newAnswers.length === 0 || multiChoiceCorrectAnswers.length === 0) {
-          toast.error('Please provide answers and select correct ones for Multi-Choice type');
-          return;
-        }
-        questionData.answers = newAnswers;
-        questionData.correctAnswers = multiChoiceCorrectAnswers;
-        break;
-      case 'Text-Input':
-        if (!textInputAnswer) {
-          toast.error('Please provide the correct answer for Text-Input type');
-          return;
-        }
-        questionData.correctAnswer = textInputAnswer;
-        break;
-      default:
-        toast.error('Invalid question type');
-        return;
-    }
+  //   switch (questionType) {
+  //     case 'Choice':
+  //       if (newAnswers.length !== 4 || correctAnswerIndex === null) {
+  //         toast.error('Please provide 4 answers and select the correct one for Choice type');
+  //         return;
+  //       }
+  //       questionData.answers = newAnswers;
+  //       questionData.correctAnswerIndex = correctAnswerIndex;
+  //       break;
+  //     case 'Multi-Choice':
+  //       if (newAnswers.length === 0 || multiChoiceCorrectAnswers.length === 0) {
+  //         toast.error('Please provide answers and select correct ones for Multi-Choice type');
+  //         return;
+  //       }
+  //       questionData.answers = newAnswers;
+  //       questionData.correctAnswers = multiChoiceCorrectAnswers;
+  //       break;
+  //     case 'Text-Input':
+  //       if (!textInputAnswer) {
+  //         toast.error('Please provide the correct answer for Text-Input type');
+  //         return;
+  //       }
+  //       questionData.correctAnswer = textInputAnswer;
+  //       break;
+  //     default:
+  //       toast.error('Invalid question type');
+  //       return;
+  //   }
 
-      try {
-        const { data } = await axios.post(
-          'http://localhost:8080/api/question/create-question',
-          questionData,
-          console.log(questionData)
-        );
-        if (data?.success) {
-          toast.success('Question Created Successfully');
-          setQuestions([...questions, data.question]);
-          setShowQuestionForm(false);
-          resetQuestionForm();
-        } else {
-          toast.error(data?.message);
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error('Something went wrong');
-      }
-      return null;
-  };
+  //     try {
+  //       const { data } = await axios.post(
+  //         'http://localhost:8080/api/question/create-question',
+  //         questionData,
+  //         console.log(questionData)
+  //       );
+  //       if (data?.success) {
+  //         toast.success('Question Created Successfully');
+  //         setQuestions([...questions, data.question]);
+  //         setShowQuestionForm(false);
+  //         resetQuestionForm();
+  //         getAllQuestion();
+  //       } else {
+  //         toast.error(data?.message);
+  //       }
+  //     } catch (error) {
+  //       console.log('Error creating question:', error.response?.data || error.message);
+  //       toast.error('Something went wrong: ' + (error.response?.data?.message || error.message));
+  //     }
+  //     return null;
+  // };
 
-  const resetQuestionForm = () => {
-    setNewQuestion('');
-    setNewAnswers(['', '', '', '']);
-    setCorrectAnswerIndex(null);
-    setQuestionType('');
-    setTextInputAnswer('');
-    setMultiChoiceCorrectAnswers([]);
-  };
-  const handleQuestionTypeChange = (value) => {
-    setQuestionType(value);
-    if (value === 'Choice') {
-      setNewAnswers(['', '', '', '']);
-    } else {
-      setNewAnswers(['']);
-    }
-    setCorrectAnswerIndex(null);
-    setMultiChoiceCorrectAnswers([]);
-  };
-
+  // const resetQuestionForm = () => {
+  //   setNewQuestion('');
+  //   setNewAnswers(['', '', '', '']);
+  //   setCorrectAnswerIndex(null);
+  //   setQuestionType('');
+  //   setTextInputAnswer('');
+  //   setMultiChoiceCorrectAnswers([]);
+  // };
+  // const handleQuestionTypeChange = (value) => {
+  //   setQuestionType(value);
+  //   if (value === 'Choice') {
+  //     setNewAnswers(['', '', '', '']);
+  //   } else {
+  //     setNewAnswers(['']);
+  //   }
+  //   setCorrectAnswerIndex(null);
+  //   setMultiChoiceCorrectAnswers([]);
+  // };
 
   //create exam
   const handleCreate = async (e) => {
@@ -217,7 +232,7 @@ const CreateExam = () => {
         decription,
         accessPassword,
         correctChoice,
-        question: selectedQuestions
+        question: selectedQuestions,
       };
 
       const { data } = await axios.post('http://localhost:8080/api/exam/create-exam', examData);
@@ -378,13 +393,13 @@ const CreateExam = () => {
                 Add Available Questions
               </button>
               <button
-                onClick={() => setShowQuestionForm(!showQuestionForm)}
+                onClick={() => setShowCreateQuestion(true)}
                 className="btn btn-primary mb-2 ms-2"
               >
-                Input Questions
+                Create Question
               </button>
             </div>
-            {showQuestionForm && (
+            {/* {showQuestionForm && (
               <div className="question-form">
                 <div className="mb-3">
                   <Select
@@ -545,7 +560,7 @@ const CreateExam = () => {
                   Create Question
                 </button>
               </div>
-            )}
+            )} */}
             <div className="mb-3">
               <button className="btn btn-success" onClick={handleCreate}>
                 Create Exam
@@ -554,6 +569,12 @@ const CreateExam = () => {
           </div>
         </div>
       </div>
+      {showCreateQuestion && (
+        <QuestionForm
+          onQuestionCreated={handleQuestionCreated}
+          onClose={() => setShowCreateQuestion(false)}
+        />
+      )}
     </Layout>
   );
 };
