@@ -1,0 +1,38 @@
+/* Dashboard.css */
+.dashboard {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}
+
+.dashboard h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.table th {
+  background-color: #f4f4f4;
+}
+
+.btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+}

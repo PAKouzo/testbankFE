@@ -11,6 +11,7 @@ const DoExam = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [result, setResult] = useState(null);
 
   const getExam = async () => {
     try {
@@ -53,12 +54,14 @@ const DoExam = () => {
   const handleSubmitExam = async () => {
     try {
       const response = await axios.post(`http://localhost:8080/api/exam/submit-exam/${_id}`, {
-        answers,
+        userId: 'currentUserId',
+        answers: answers,
       });
-      if (response.data?.success) {
-        navigate('/dashboard/student/results');
+
+      if (response.data.success) {
+        setResult(response.data); // Save the result in state
       } else {
-        console.log(response.data?.message);
+        console.log(response.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -82,73 +85,101 @@ const DoExam = () => {
   return (
     <Layout>
       <div className="col-md-8 exam-take">
-        <h1 className="text-center">Take Exam: {exam?.name}</h1>
-        {currentQuestion && (
-          <div key={currentQuestion._id} className="question-block">
-            <h5>
-              Question {currentQuestionIndex + 1}: {currentQuestion.content}
-            </h5>
-            {currentQuestion.type === 'Text-Input' ? (
-              <div className="text-input">
-                <input
-                  type="text"
-                  onChange={(e) => handleSingleAnswerChange(currentQuestion._id, e.target.value)}
-                  placeholder="Type your answer here"
-                />
-              </div>
-            ) : currentQuestion.type === 'Multiple-Choice' ? (
-              <div className="choice">
-                {['answer', 'answer1', 'answer2', 'answer3', 'answer4'].map((key) => (
-                  <div key={key}>
+        {result ? (
+          <div className="result-page">
+            <h1 className="text-center">Exam Result</h1>
+            <div className="result-details">
+              <p>
+                <strong>Exam Name:</strong> {exam.name}
+              </p>
+              <p>
+                <strong>Your Score:</strong> {result.score}
+              </p>
+            </div>
+            <div className="navigation-buttons">
+              <button className="btn btn-primary" onClick={() => navigate('/')}>
+                Go to Home
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <h1 className="text-center">Take Exam: {exam?.name}</h1>
+            {currentQuestion && (
+              <div key={currentQuestion._id} className="question-block">
+                <h5>
+                  Question {currentQuestionIndex + 1}: {currentQuestion.content}
+                </h5>
+                {currentQuestion.type === 'Text-Input' ? (
+                  <div className="text-input">
                     <input
-                      type="checkbox"
-                      name={`question-${currentQuestion._id}`}
-                      value={currentQuestion[key]}
-                      onChange={(e) =>
-                        handleMultipleAnswerChange(currentQuestion._id, e.target.value)
-                      }
-                    />
-                    {currentQuestion[key]}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="choice">
-                {['answer1', 'answer2', 'answer3', 'answer4'].map((key) => (
-                  <div key={key}>
-                    <input
-                      type="radio"
-                      name={`question-${currentQuestion._id}`}
-                      value={currentQuestion[key]}
+                      type="text"
+                      value={answers[currentQuestion._id] || ''}
                       onChange={(e) =>
                         handleSingleAnswerChange(currentQuestion._id, e.target.value)
                       }
+                      placeholder="Type your answer here"
                     />
-                    {currentQuestion[key]}
                   </div>
-                ))}
+                ) : currentQuestion.type === 'Multiple-Choice' ? (
+                  <div className="choice">
+                    {['answer', 'answer1', 'answer2', 'answer3', 'answer4'].map((key) => (
+                      <div key={key}>
+                        <input
+                          type="checkbox"
+                          name={`question-${currentQuestion._id}`}
+                          value={currentQuestion[key]}
+                          checked={(answers[currentQuestion._id] || []).includes(
+                            currentQuestion[key],
+                          )}
+                          onChange={(e) =>
+                            handleMultipleAnswerChange(currentQuestion._id, e.target.value)
+                          }
+                        />
+                        {currentQuestion[key]}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="choice">
+                    {['answer1', 'answer2', 'answer3', 'answer4'].map((key) => (
+                      <div key={key}>
+                        <input
+                          type="radio"
+                          name={`question-${currentQuestion._id}`}
+                          value={currentQuestion[key]}
+                          checked={answers[currentQuestion._id] === currentQuestion[key]}
+                          onChange={(e) =>
+                            handleSingleAnswerChange(currentQuestion._id, e.target.value)
+                          }
+                        />
+                        {currentQuestion[key]}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
-          </div>
+            <div className="navigation-buttons">
+              <button
+                className="btn btn-secondary"
+                onClick={handlePreviousQuestion}
+                disabled={currentQuestionIndex === 0}
+              >
+                Previous
+              </button>
+              {currentQuestionIndex < questions.length - 1 ? (
+                <button className="btn btn-secondary" onClick={handleNextQuestion}>
+                  Next
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={handleSubmitExam}>
+                  Submit Exam
+                </button>
+              )}
+            </div>
+          </>
         )}
-        <div className="navigation-buttons">
-          <button
-            className="btn btn-secondary"
-            onClick={handlePreviousQuestion}
-            disabled={currentQuestionIndex === 0}
-          >
-            Previous
-          </button>
-          {currentQuestionIndex < questions.length - 1 ? (
-            <button className="btn btn-secondary" onClick={handleNextQuestion}>
-              Next
-            </button>
-          ) : (
-            <button className="btn btn-primary" onClick={handleSubmitExam}>
-              Submit Exam
-            </button>
-          )}
-        </div>
       </div>
     </Layout>
   );

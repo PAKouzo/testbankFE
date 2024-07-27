@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Layout from '../components/Layout/layout';
+import '../styles/Homepage.css';
 
 const HomePage = () => {
   const [exams, setExams] = useState([]);

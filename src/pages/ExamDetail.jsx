@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../components/Layout/layout';
 import { useAuth } from '../context/auth';
+import '../styles/ExamDetails.css';
 
 const ExamDetail = () => {
   const [auth, setAuth] = useAuth();
