@@ -1,25 +1,52 @@
-.choice {
-  margin-top: 10px;
+.exam-take {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.choice div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.choice label {
-  margin-left: 8px;
-  font-size: 16px;
+.exam-take h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
   color: #333;
 }
 
-.timer {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #e7f1ff;
+.question-block {
+  margin-bottom: 2rem;
+}
+
+.question-block h5 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.choice,
+.text-input {
+  margin-bottom: 1rem;
+}
+
+.choice div,
+.text-input input {
+  margin-bottom: 0.5rem;
+}
+
+.text-input input {
+  width: 100%;
+  padding: 0.5rem;
   border-radius: 5px;
-  font-size: 18px;
-  color: #007bff;
-  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.navigation-buttons button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
 }
