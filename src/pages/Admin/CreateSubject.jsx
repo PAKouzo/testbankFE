@@ -7,7 +7,7 @@ import SubjectForm from '../../components/Form/SubjectForm';
 import { Modal } from 'antd';
 
 const CreateSubject = () => {
-  const [subjects, setSubjects] = useState();
+  const [subjects, setSubjects] = useState([]);
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);

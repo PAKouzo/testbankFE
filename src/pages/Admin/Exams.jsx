@@ -74,7 +74,11 @@ const Exams = () => {
             {exams?.map((e) => (
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
-                  <Link key={e._id} to={`/dashboard/admin/exam/${e._id}`} className="exam-link">
+                  <Link
+                    key={e._id}
+                    to={`/dashboard/admin/detail-exam/${e._id}`}
+                    className="exam-link"
+                  >
                     <h5 className="card-title">Chủ đề: {e.name}</h5>
                     <h4 className="card-title">
                       Môn Học: {e.subject ? e.subject.name : `${subjects.name}`}
