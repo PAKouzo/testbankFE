@@ -90,7 +90,7 @@ useEffect(() => {
             {exams?.map((e) => (
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
-                  <Link key={e.slug} to={`/dashboard/admin/exam/${e.slug}`} className="exam-link">
+                  <Link key={e.slug} to={`/dashboard/admin/exam/${e._id}`} className="exam-link">
                     <h5 className="card-title">Chủ đề: {e.name}</h5>
                     <h4 className="card-title">
                       Môn Học: {e.subject ? e.subject.name : `${subjects.name}`}
@@ -106,7 +106,7 @@ useEffect(() => {
                   <div className="mb-3">
                     <button
                       className="btn btn-info "
-                      onClick={() => navigate(`/dashboard/admin/detail-exam/${e.slug}`)}
+                      onClick={() => navigate(`/dashboard/admin/detail-exam/${e._id}`)}
                     >
                       Detail Exam
                     </button>

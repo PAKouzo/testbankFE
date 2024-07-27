@@ -24,6 +24,7 @@ const UpdateExam = () => {
   const [selectedQuestions, setSelectedQuestions] = useState(['']);
   const [timeStart, setTimeStart] = useState('');
   const [timeEnd, setTimeEnd] = useState('');
+  const [exams, setExams] = useState([]);
 
   const navigate = useNavigate();
 
@@ -66,10 +67,21 @@ const UpdateExam = () => {
     }
   };
 
+  const getAllExams = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8080/api/exam/get-all');
+      setExams(data.exams);
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
   useEffect(() => {
     getAllCourses();
     getAllSubjects();
     getAllQuestion();
+    getAllExams();
   }, []);
 
   const handleAddOption = () => {
@@ -269,8 +281,8 @@ const UpdateExam = () => {
               </button>
             </div>
             <div className="mb-3">
-              <button className="btn btn-success" onClick={handleCreate}>
-                Create Exam
+              <button className="btn btn-success" onClick={handleUpdate}>
+                Update Exam
               </button>
             </div>
           </div>
