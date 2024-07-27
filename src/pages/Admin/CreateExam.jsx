@@ -132,7 +132,7 @@ const CreateExam = () => {
       }
 
       const { data } = await axios.post(
-        'http://localhost:8080/api/question/create-question',
+        'http://localhost:8080/api/question/admin/create-question',
         questionData,
       );
 

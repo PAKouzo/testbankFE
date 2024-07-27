@@ -21,31 +21,32 @@ const DetailsExam = () => {
   const [accessPassword, setAccessPassword] = useState('');
   const [subject, setSubject] = useState('');
   const [course, setCourse] = useState('');
+  const [exam, setExam] = useState('');
 
   const navigate = useNavigate();
 
-  const getAllExams = async () => {
+  const getSingleExam = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/exam/get-all');
-      setExams(data.exams);
+      const { data } = await axios.get(`http://localhost:8080/api/exam/get-single-exam/${_id}`);
+      setExams(data);
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when getting exam by id!');
     }
   };
   useEffect(() => {
-    getAllExams();
+    getSingleExam();
   }, []);
   //get all subject
   const getAllSubject = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
       if (data?.success) {
         setSubjects(data?.subjects);
       }
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when getting all subjects');
     }
   };
 
@@ -56,13 +57,13 @@ const DetailsExam = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
       if (data?.success) {
         setCourses(data?.courses);
       }
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when getting all courses');
     }
   };
 
