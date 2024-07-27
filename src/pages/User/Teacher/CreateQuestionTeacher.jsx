@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import axios from 'axios';
 import { Select } from 'antd';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import Layout from '../../../components/Layout/layout';
 
 const { Option } = Select;
 
-const UpdateQuestion = () => {
+const CreateQuestionTeacher = () => {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
   const [course, setCourse] = useState('');
   const [topic, setTopic] = useState('');
-  const [difficulty, setDifficulty] = useState([]);
-  const [type, setType] = useState([]);
+  const [difficulty, setDifficulty] = useState('');
+  const [type, setType] = useState('');
   const [content, setContent] = useState('');
   const [answer, setAnswer] = useState('');
   const [answer1, setAnswer1] = useState('');
@@ -25,60 +25,18 @@ const UpdateQuestion = () => {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [correctAnswer1, setCorrectAnswer1] = useState('');
   const [solution, setSolution] = useState('');
-  const [id, setId] = useState('');
-  const { _id } = useParams();
   const navigate = useNavigate();
 
-  //get single question
-  const getSingleQuestion = async () => {
-    try {
-      const { data } = await axios.get(`http://localhost:8080/api/question/get-question/${_id}`);
-      setId(data.question._id);
-      setCourse(data.question.course._id);
-      setSubject(data.question.subject._id);
-      setTopic(data.question.topic);
-      setDifficulty(data.question.difficulty);
-      setType(data.question.type);
-      setContent(data.question.content);
-      setSolution(data.question.solution);
-
-      if (data.question.type === 'Text-Input') {
-        setCorrectAnswer(data.question.correctAnswer);
-      } else if (data.question.type === 'Choice') {
-        setAnswer1(data.question.answer1);
-        setAnswer2(data.question.answer2);
-        setAnswer3(data.question.answer3);
-        setAnswer4(data.question.answer4);
-        setCorrectAnswer(data.question.correctAnswer);
-      } else if (data.question.type === 'Multi-Choice') {
-        setAnswer(data.question.answer);
-        setAnswer1(data.question.answer1);
-        setAnswer2(data.question.answer2);
-        setAnswer3(data.question.answer3);
-        setAnswer4(data.question.answer4);
-        setCorrectAnswer(data.question.correctAnswer);
-        setCorrectAnswer1(data.question.correctAnswer1);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
-  };
-
-  useEffect(() => {
-    getSingleQuestion();
-  }, []);
-
-  // get all courses
+  // Get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data.success) {
         setCourses(data.courses);
       }
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong while fetching courses');
     }
   };
 
@@ -86,16 +44,16 @@ const UpdateQuestion = () => {
     getAllCourses();
   }, []);
 
-  // get all subjects
+  // Get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong while fetching subjects');
     }
   };
 
@@ -103,18 +61,19 @@ const UpdateQuestion = () => {
     getAllSubjects();
   }, []);
 
-  //update question
-  const handleUpdate = async (e) => {
+  // Handle create
+  const handleCreate = async (e) => {
     e.preventDefault();
     try {
       const questionData = new FormData();
-      questionData.append('course', course);
       questionData.append('subject', subject);
+      questionData.append('course', course);
       questionData.append('topic', topic);
       questionData.append('difficulty', difficulty);
       questionData.append('type', type);
       questionData.append('content', content);
       questionData.append('solution', solution);
+
       if (type === 'Text-Input') {
         questionData.append('correctAnswer', correctAnswer);
       } else if (type === 'Choice') {
@@ -132,76 +91,17 @@ const UpdateQuestion = () => {
         questionData.append('correctAnswer', correctAnswer);
         questionData.append('correctAnswer1', correctAnswer1);
       }
-      const { data } = axios.put(
-        `http://localhost:8080/api/question/admin/update-question/${id}`,
+
+      const { data } = await axios.post(
+        'http://localhost:8080/api/question/teacher/create-question',
         questionData,
       );
-      if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success('Question Updated Successfully');
-        navigate('/dashboard/admin/questions');
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
-  };
 
-  //delete question
-  const handleDelete = async () => {
-    try {
-      let answer = window.prompt('Are you sure to delete this product ? ');
-      if (!answer) return;
-      const { data } = await axios.delete(
-        `http://localhost:8080/api/question/admin/delete-question/${id}`,
-      );
-      toast.success('Product Deleted Succfully');
-      navigate('/dashboard/admin/questions');
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
-  };
-
-  //duplicate question
-  const handleDuplicate = async () => {
-    try {
-      const newDuplicateQuestion = {
-        subject,
-        course,
-        topic,
-        difficulty,
-        type,
-        content,
-        solution,
-      };
-      if (type === 'Text-Input') {
-        newDuplicateQuestion.correctAnswer = correctAnswer;
-      } else if (type === 'Choice') {
-        newDuplicateQuestion.answer1 = answer1;
-        newDuplicateQuestion.answer2 = answer2;
-        newDuplicateQuestion.answer3 = answer3;
-        newDuplicateQuestion.answer4 = answer4;
-        newDuplicateQuestion.correctAnswer = correctAnswer;
-      } else if (type === 'Multi-Choice') {
-        newDuplicateQuestion.answer = answer;
-        newDuplicateQuestion.answer1 = answer1;
-        newDuplicateQuestion.answer2 = answer2;
-        newDuplicateQuestion.answer3 = answer3;
-        newDuplicateQuestion.answer4 = answer4;
-        newDuplicateQuestion.correctAnswer = correctAnswer;
-        newDuplicateQuestion.correctAnswer1 = correctAnswer1;
-      }
-      const { data } = await axios.post(
-        `http://localhost:8080/api/question/admin/duplicate-question/${id}`,
-        newDuplicateQuestion,
-      );
-      if (data?.success) {
-        toast.error(data?.message);
+      if (data.success) {
+        toast.success('Question Created Successfully');
+        navigate('/dashboard/teacher/questions');
       } else {
-        toast.success('Question Duplicated Successfully');
-        window.location.reload();
+        toast.error(data.message || 'Error creating question');
       }
     } catch (error) {
       console.log(error);
@@ -210,13 +110,13 @@ const UpdateQuestion = () => {
   };
 
   return (
-    <Layout title="Dashboard - Update Question">
+    <Layout title="Dashboard - Create Question">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
-          <h1>Update Question</h1>
+          <h1>Create Question</h1>
           <div className="m-1 w-75">
             <Select
               bordered={false}
@@ -225,7 +125,6 @@ const UpdateQuestion = () => {
               showSearch
               className="form-select mb-3"
               onChange={(value) => setCourse(value)}
-              value={course}
             >
               {courses.map((course) => (
                 <Option key={course._id} value={course._id}>
@@ -240,7 +139,6 @@ const UpdateQuestion = () => {
               showSearch
               className="form-select mb-3"
               onChange={(value) => setSubject(value)}
-              value={subject}
             >
               {subjects.map((subject) => (
                 <Option key={subject._id} value={subject._id}>
@@ -264,7 +162,6 @@ const UpdateQuestion = () => {
                 placeholder="Select Difficulty"
                 className="form-control"
                 onChange={(value) => setDifficulty(value)}
-                value={difficulty}
               >
                 <Option value="Identification">Identification</Option>
                 <Option value="Understanding">Understanding</Option>
@@ -278,7 +175,6 @@ const UpdateQuestion = () => {
                 placeholder="Select Type"
                 className="form-control"
                 onChange={(value) => setType(value)}
-                value={type}
               >
                 <Option value="Text-Input">Text-Input</Option>
                 <Option value="Choice">Choice</Option>
@@ -422,21 +318,9 @@ const UpdateQuestion = () => {
               />
             </div>
             <div className="mb-3">
-              <button className="btn btn-primary" onClick={handleUpdate}>
-                Update Question
+              <button className="btn btn-primary" onClick={handleCreate}>
+                Create Question
               </button>
-            </div>
-            <div className="mb-3">
-              <button className="btn btn-danger" onClick={handleDelete}>
-                Delete Question
-              </button>
-            </div>
-            <div className="mb-3">
-              <Link to={'/dashboard/admin/questions'}>
-                <button className="btn btn-warning" onClick={handleDuplicate}>
-                  Duplicate Question
-                </button>
-              </Link>
             </div>
           </div>
         </div>
@@ -445,4 +329,4 @@ const UpdateQuestion = () => {
   );
 };
 
-export default UpdateQuestion;
+export default CreateQuestionTeacher;

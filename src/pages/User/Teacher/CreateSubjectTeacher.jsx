@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import Layout from '../../components/Layout/layout';
-import toast from 'react-hot-toast';
 import axios from 'axios';
-import SubjectForm from '../../components/Form/SubjectForm';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
 import { Modal } from 'antd';
+import SubjectForm from '../../../components/Form/SubjectForm';
+import Layout from '../../../components/Layout/layout';
 
-const CreateSubject = () => {
+const CreateSubjectTeacher = () => {
   const [subjects, setSubjects] = useState();
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
@@ -17,9 +17,12 @@ const CreateSubject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8080/api/subject/admin/create-subject', {
-        name,
-      });
+      const { data } = await axios.post(
+        'http://localhost:8080/api/subject/teacher/create-subject',
+        {
+          name,
+        },
+      );
       if (data.success) {
         toast.success(`${name} is created`);
         getAllSubjects();
@@ -35,7 +38,7 @@ const CreateSubject = () => {
   // get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data?.success) {
         setSubjects(data?.subjects);
       }
@@ -54,7 +57,7 @@ const CreateSubject = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/subject/admin/update-subject/${selected._id}`,
+        `http://localhost:8080/api/subject/teacher/update-subject/${selected._id}`,
         {
           name: updatedName,
         },
@@ -77,7 +80,7 @@ const CreateSubject = () => {
   const handleDelete = async (cId) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:8080/api/subject/admin/delete-subject/${cId}`,
+        `http://localhost:8080/api/subject/teacher/delete-subject/${cId}`,
       );
       if (data.success) {
         toast.success(`${name} is delete`);
@@ -94,7 +97,7 @@ const CreateSubject = () => {
     <Layout title="Dashboard - Create Subject">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
           <h1>Manage Subject</h1>
@@ -153,4 +156,4 @@ const CreateSubject = () => {
   );
 };
 
-export default CreateSubject;
+export default CreateSubjectTeacher;

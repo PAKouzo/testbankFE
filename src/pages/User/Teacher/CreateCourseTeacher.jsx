@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import Layout from '../../components/Layout/layout';
-import toast from 'react-hot-toast';
 import axios from 'axios';
-import SubjectForm from '../../components/Form/SubjectForm';
+import React, { useEffect, useState } from 'react';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import Layout from '../../../components/Layout/layout';
 import { Modal } from 'antd';
+import CourseForm from '../../../components/Form/CourseForm';
+import { toast } from 'react-toastify';
 
-const CreateSubject = () => {
-  const [subjects, setSubjects] = useState();
+const CreateCourseTeacher = () => {
+  const [courses, setCourses] = useState();
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -17,12 +17,12 @@ const CreateSubject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8080/api/subject/admin/create-subject', {
+      const { data } = await axios.post('http://localhost:8080/api/course/teacher/create-course', {
         name,
       });
       if (data.success) {
         toast.success(`${name} is created`);
-        getAllSubjects();
+        getAllCourses();
       } else {
         toast.error(data.message);
       }
@@ -32,12 +32,12 @@ const CreateSubject = () => {
     }
   };
 
-  // get all subjects
-  const getAllSubjects = async () => {
+  // get all courses
+  const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data?.success) {
-        setSubjects(data?.subjects);
+        setCourses(data?.courses);
       }
     } catch (error) {
       console.log(error);
@@ -46,15 +46,15 @@ const CreateSubject = () => {
   };
 
   useEffect(() => {
-    getAllSubjects();
+    getAllCourses();
   }, []);
 
-  //update subject
+  //update course
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/subject/admin/update-subject/${selected._id}`,
+        `http://localhost:8080/api/course/teacher/update-course/${selected._id}`,
         {
           name: updatedName,
         },
@@ -63,7 +63,7 @@ const CreateSubject = () => {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
         setVisible(false);
-        getAllSubjects();
+        getAllCourses();
       } else {
         toast.error(data.message);
       }
@@ -73,15 +73,15 @@ const CreateSubject = () => {
     }
   };
 
-  //delete subject
+  //delete course
   const handleDelete = async (cId) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:8080/api/subject/admin/delete-subject/${cId}`,
+        `http://localhost:8080/api/course/teacher/delete-course/${cId}`,
       );
       if (data.success) {
         toast.success(`${name} is delete`);
-        getAllSubjects();
+        getAllCourses();
       } else {
         toast.error(data.message);
       }
@@ -91,15 +91,15 @@ const CreateSubject = () => {
   };
 
   return (
-    <Layout title="Dashboard - Create Subject">
+    <Layout title="Dashboard - Create Course">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
-          <h1>Manage Subject</h1>
+          <h1>Manage Course Or Grade Level</h1>
           <div className="p-3 w-50">
-            <SubjectForm handleSubmit={handleSubmit} value={name} setValue={setName} />
+            <CourseForm handleSubmit={handleSubmit} value={name} setValue={setName} />
           </div>
           <div className="w-75">
             <table className="table">
@@ -110,7 +110,7 @@ const CreateSubject = () => {
                 </tr>
               </thead>
               <tbody>
-                {subjects?.map((c) => (
+                {courses?.map((c) => (
                   <>
                     <tr>
                       <td key={c._id}>{c.name}</td>
@@ -141,11 +141,7 @@ const CreateSubject = () => {
             </table>
           </div>
           <Modal onCancel={() => setVisible(false)} footer={null} visible={visible}>
-            <SubjectForm
-              value={updatedName}
-              setValue={setUpdatedName}
-              handleSubmit={handleUpdate}
-            />
+            <CourseForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
           </Modal>
         </div>
       </div>
@@ -153,4 +149,4 @@ const CreateSubject = () => {
   );
 };
 
-export default CreateSubject;
+export default CreateCourseTeacher;

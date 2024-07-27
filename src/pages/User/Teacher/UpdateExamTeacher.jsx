@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import axios from 'axios';
 import { Select } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import Layout from '../../../components/Layout/layout';
+import axios from 'axios';
 
 const { Option } = Select;
-const UpdateExam = () => {
+
+const UpdateExamTeacher = () => {
   const [courses, setCourses] = useState([]);
   const [subject, setSubject] = useState('');
   const [subjects, setSubjects] = useState([]);
@@ -30,7 +31,7 @@ const UpdateExam = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data.success) {
         setCourses(data.courses);
       }
@@ -43,7 +44,7 @@ const UpdateExam = () => {
   // get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
@@ -111,12 +112,12 @@ const UpdateExam = () => {
       };
 
       const { data } = await axios.put(
-        'http://localhost:8080/api/exam/admin/create-exam',
+        'http://localhost:8080/api/exam/teacher/create-exam',
         examData,
       );
       if (data?.success) {
         toast.success('Exam Created Successfully');
-        navigate('/dashboard/admin/exams');
+        navigate('/dashboard/teacher/exams');
       } else {
         toast.error(data?.message);
       }
@@ -130,10 +131,10 @@ const UpdateExam = () => {
     <Layout title="Dashboard - Create Exam">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
-          <h1>Create Exam</h1>
+          <h1>Update Exam</h1>
           <div className="m-1 w-75">
             <Select
               bordered={false}
@@ -272,8 +273,8 @@ const UpdateExam = () => {
               </button>
             </div>
             <div className="mb-3">
-              <button className="btn btn-success" onClick={handleCreate}>
-                Create Exam
+              <button className="btn btn-success" onClick={handleUpdate}>
+                Update Exam
               </button>
             </div>
           </div>
@@ -283,4 +284,4 @@ const UpdateExam = () => {
   );
 };
 
-export default UpdateExam;
+export default UpdateExamTeacher;

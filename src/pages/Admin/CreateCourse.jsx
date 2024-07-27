@@ -17,7 +17,7 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8080/api/course/create-course', {
+      const { data } = await axios.post('http://localhost:8080/api/course/admin/create-course', {
         name,
       });
       if (data.success) {
@@ -35,7 +35,7 @@ const CreateCourse = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
       if (data?.success) {
         setCourses(data?.courses);
       }
@@ -54,7 +54,7 @@ const CreateCourse = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/course/update-course/${selected._id}`,
+        `http://localhost:8080/api/course/admin/update-course/${selected._id}`,
         {
           name: updatedName,
         },
@@ -76,7 +76,9 @@ const CreateCourse = () => {
   //delete course
   const handleDelete = async (cId) => {
     try {
-      const { data } = await axios.delete(`http://localhost:8080/api/course/delete-course/${cId}`);
+      const { data } = await axios.delete(
+        `http://localhost:8080/api/course/admin/delete-course/${cId}`,
+      );
       if (data.success) {
         toast.success(`${name} is delete`);
         getAllCourses();

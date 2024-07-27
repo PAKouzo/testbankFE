@@ -27,27 +27,11 @@ const Exams = () => {
   useEffect(() => {
     getAllExams();
   }, []);
-  //get all subject
-  const getAllSubject = async () => {
-    try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
-      if (data?.success) {
-        setSubjects(data?.subjects);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
-  };
-
-  useEffect(() => {
-    getAllSubject();
-  }, []);
 
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
       if (data?.success) {
         setCourses(data?.courses);
       }
@@ -64,7 +48,7 @@ const Exams = () => {
   // get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
       if (data?.success) {
         setSubjects(data?.subjects);
       }

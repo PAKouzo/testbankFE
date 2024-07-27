@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import axios from 'axios';
 import { Select } from 'antd';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import Layout from '../../../components/Layout/layout';
 
 const { Option } = Select;
 
-const UpdateQuestion = () => {
+const UpdateQuestionTeacher = () => {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
@@ -72,7 +72,7 @@ const UpdateQuestion = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data.success) {
         setCourses(data.courses);
       }
@@ -89,7 +89,7 @@ const UpdateQuestion = () => {
   // get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
@@ -133,14 +133,14 @@ const UpdateQuestion = () => {
         questionData.append('correctAnswer1', correctAnswer1);
       }
       const { data } = axios.put(
-        `http://localhost:8080/api/question/admin/update-question/${id}`,
+        `http://localhost:8080/api/question/teacher/update-question/${id}`,
         questionData,
       );
       if (data?.success) {
         toast.error(data?.message);
       } else {
         toast.success('Question Updated Successfully');
-        navigate('/dashboard/admin/questions');
+        navigate('/dashboard/teacher/questions');
       }
     } catch (error) {
       console.log(error);
@@ -154,10 +154,10 @@ const UpdateQuestion = () => {
       let answer = window.prompt('Are you sure to delete this product ? ');
       if (!answer) return;
       const { data } = await axios.delete(
-        `http://localhost:8080/api/question/admin/delete-question/${id}`,
+        `http://localhost:8080/api/question/teacher/delete-question/${id}`,
       );
       toast.success('Product Deleted Succfully');
-      navigate('/dashboard/admin/questions');
+      navigate('/dashboard/teacher/questions');
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
@@ -194,7 +194,7 @@ const UpdateQuestion = () => {
         newDuplicateQuestion.correctAnswer1 = correctAnswer1;
       }
       const { data } = await axios.post(
-        `http://localhost:8080/api/question/admin/duplicate-question/${id}`,
+        `http://localhost:8080/api/question/teacher/duplicate-question/${id}`,
         newDuplicateQuestion,
       );
       if (data?.success) {
@@ -213,7 +213,7 @@ const UpdateQuestion = () => {
     <Layout title="Dashboard - Update Question">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
           <h1>Update Question</h1>
@@ -432,7 +432,7 @@ const UpdateQuestion = () => {
               </button>
             </div>
             <div className="mb-3">
-              <Link to={'/dashboard/admin/questions'}>
+              <Link to={'/dashboard/teacher/questions'}>
                 <button className="btn btn-warning" onClick={handleDuplicate}>
                   Duplicate Question
                 </button>
@@ -445,4 +445,4 @@ const UpdateQuestion = () => {
   );
 };
 
-export default UpdateQuestion;
+export default UpdateQuestionTeacher;

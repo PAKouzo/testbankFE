@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import axios from 'axios';
-import { Select, Radio } from 'antd';
+import QuestionFormTeacher from '../../../components/Form/QuestionFormTeacher';
 import { useNavigate } from 'react-router-dom';
+import Layout from '../../../components/Layout/layout';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import { Select } from 'antd';
 import { toast } from 'react-toastify';
-import QuestionForm from '../../components/Form/QuestionForm';
-import './CreateExam.css';
+import axios from 'axios';
+
 const { Option } = Select;
 
-const CreateExam = () => {
+const CreateExamTeacher = () => {
   const [courses, setCourses] = useState([]);
   const [subject, setSubject] = useState('');
   const [subjects, setSubjects] = useState([]);
@@ -41,7 +41,7 @@ const CreateExam = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data.success) {
         setCourses(data.courses);
       }
@@ -54,7 +54,7 @@ const CreateExam = () => {
   // get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
@@ -180,8 +180,8 @@ const CreateExam = () => {
   //       if (data?.success) {
   //         toast.success('Question Created Successfully');
   //         setQuestions([...questions, data.question]);
-  //         setShowQuestionForm(false);
-  //         resetQuestionForm();
+  //         setShowQuestionFormTeacher(false);
+  //         resetQuestionFormTeacher();
   //         getAllQuestion();
   //       } else {
   //         toast.error(data?.message);
@@ -193,7 +193,7 @@ const CreateExam = () => {
   //     return null;
   // };
 
-  // const resetQuestionForm = () => {
+  // const resetQuestionFormTeacher = () => {
   //   setNewQuestion('');
   //   setNewAnswers(['', '', '', '']);
   //   setCorrectAnswerIndex(null);
@@ -236,12 +236,12 @@ const CreateExam = () => {
       };
 
       const { data } = await axios.post(
-        'http://localhost:8080/api/exam/admin/create-exam',
+        'http://localhost:8080/api/exam/teacher/create-exam',
         examData,
       );
       if (data?.success) {
         toast.success('Exam Created Successfully');
-        navigate('/dashboard/admin/exams');
+        navigate('/dashboard/teacher/exams');
       } else {
         toast.error(data?.message);
       }
@@ -255,7 +255,7 @@ const CreateExam = () => {
     <Layout title="Dashboard - Create Exam">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
           <h1>Create Exam</h1>
@@ -402,7 +402,7 @@ const CreateExam = () => {
                 Create Question
               </button>
             </div>
-            {/* {showQuestionForm && (
+            {/* {showQuestionFormTeacher && (
               <div className="question-form">
                 <div className="mb-3">
                   <Select
@@ -573,7 +573,7 @@ const CreateExam = () => {
         </div>
       </div>
       {showCreateQuestion && (
-        <QuestionForm
+        <QuestionFormTeacher
           onQuestionCreated={handleQuestionCreated}
           onClose={() => setShowCreateQuestion(false)}
         />
@@ -581,5 +581,4 @@ const CreateExam = () => {
     </Layout>
   );
 };
-
-export default CreateExam;
+export default CreateExamTeacher;

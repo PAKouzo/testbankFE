@@ -28,6 +28,17 @@ import Course from './pages/Course';
 import DetailsQuestion from './pages/Admin/DetailsQuestion';
 import ExamDetail from './pages/ExamDetail';
 import DoExam from './pages/DoExam';
+import TeacherRoute from './components/Routes/TeacherRoute';
+import TeacherDashboard from './pages/User/Teacher/TeacherDashboard';
+import CreateCourseTeacher from './pages/User/Teacher/CreateCourseTeacher';
+import CreateSubjectTeacher from './pages/User/Teacher/CreateSubjectTeacher';
+import CreateExamTeacher from './pages/User/Teacher/CreateExamTeacher';
+import CreateQuestionTeacher from './pages/User/Teacher/CreateQuestionTeacher';
+import QuestionTeacher from './pages/User/Teacher/QuestionTeacher';
+import DetailQuestionTeacher from './pages/User/Teacher/DetailQuestionTeacher';
+import UpdateQuestionTeacher from './pages/User/Teacher/UpdateQuestionTeacher';
+import ExamsTeacher from './pages/User/Teacher/ExamsTeacher';
+import UpdateExamTeacher from './pages/User/Teacher/UpdateExamTeacher';
 
 function App() {
   return (
@@ -41,6 +52,18 @@ function App() {
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<Profile />} />
           <Route path="user/test-statistics" element={<TestStatistic />} />
+        </Route>
+        <Route path="/dashboard" element={<TeacherRoute />}>
+          <Route path="teacher" element={<TeacherDashboard />} />
+          <Route path="teacher/create-course" element={<CreateCourseTeacher />} />
+          <Route path="teacher/create-subject" element={<CreateSubjectTeacher />} />
+          <Route path="teacher/create-exams" element={<CreateExamTeacher />} />
+          <Route path="teacher/create-question" element={<CreateQuestionTeacher />} />
+          <Route path="teacher/questions" element={<QuestionTeacher />} />
+          <Route path="teacher/detail-question/:_id" element={<DetailQuestionTeacher />} />
+          <Route path="teacher/question/:_id" element={<UpdateQuestionTeacher />} />
+          <Route path="teacher/exams" element={<ExamsTeacher />} />
+          <Route path="teacher/exam/:_id" element={<UpdateExamTeacher />} />
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />

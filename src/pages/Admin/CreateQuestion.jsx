@@ -30,7 +30,7 @@ const CreateQuestion = () => {
   // Get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
       if (data.success) {
         setCourses(data.courses);
       }
@@ -47,7 +47,7 @@ const CreateQuestion = () => {
   // Get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
@@ -93,7 +93,7 @@ const CreateQuestion = () => {
       }
 
       const { data } = await axios.post(
-        'http://localhost:8080/api/question/create-question',
+        'http://localhost:8080/api/question/admin/create-question',
         questionData,
       );
 

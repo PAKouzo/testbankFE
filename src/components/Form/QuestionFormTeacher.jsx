@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
-const QuestionForm = ({ onQuestionCreated, onClose }) => {
+const QuestionFormTeacher = ({ onQuestionCreated, onClose }) => {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subject, setSubject] = useState('');
@@ -28,7 +28,7 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
   // Get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data.success) {
         setCourses(data.courses);
       }
@@ -45,7 +45,7 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
   // Get all subjects
   const getAllSubjects = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data.success) {
         setSubjects(data.subjects);
       }
@@ -91,7 +91,7 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
       }
 
       const { data } = await axios.post(
-        'http://localhost:8080/api/question/admin/create-question',
+        'http://localhost:8080/api/question/teacher/create-question',
         questionData,
       );
 
@@ -329,4 +329,4 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
   );
 };
 
-export default QuestionForm;
+export default QuestionFormTeacher;

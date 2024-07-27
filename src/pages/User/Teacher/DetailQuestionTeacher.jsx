@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
-import { toast } from 'react-toastify';
 import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './Adminpage.css';
+import TeacherDashboard from './TeacherDashboard';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
+import Layout from '../../../components/Layout/layout';
 
-const DetailsQuestion = () => {
+const DetailQuestionTeacher = () => {
   const [question, setQuestions] = useState([]);
   const [content, setContent] = useState('');
   const [type, setType] = useState();
@@ -73,6 +72,9 @@ const DetailsQuestion = () => {
         if (correctAnswer > 0 && correctAnswer <= 4) {
           optionRefs[correctAnswer - 1].current.classList.add('Correct');
         }
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } else if (type === 'Multi-Choice') {
       if (ans === correctAnswer || ans === correctAnswer1) {
@@ -101,7 +103,7 @@ const DetailsQuestion = () => {
     <Layout title="Dashboard - Details Question">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9 details-question">
           <h1>Details Question</h1>
@@ -159,4 +161,4 @@ const DetailsQuestion = () => {
   );
 };
 
-export default DetailsQuestion;
+export default DetailQuestionTeacher;

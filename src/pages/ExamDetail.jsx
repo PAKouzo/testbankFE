@@ -17,7 +17,7 @@ const ExamDetail = () => {
   const getExam = async () => {
     try {
       const { data } = await axios.get(`http://localhost:8080/api/exam/get-single-exam/${_id}`);
-      setExam(data.exam); // Assuming the response is an object with a key `exam`
+      setExam(data.exam);
     } catch (error) {
       console.log(error);
     }
