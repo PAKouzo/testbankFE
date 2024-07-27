@@ -78,7 +78,9 @@ const QuestionTeacher = () => {
                     to={`/dashboard/teacher/question/${q._id}`}
                     className="question-link"
                   >
-                    <h5 className="card-title">Môn học: {q.subject.name}</h5>
+                    <h5 className="card-title">
+                      Môn học: {q.subject ? q.subject.name : `${subjects.name}`}
+                    </h5>
                     <h4 className="card-title">Khóa học: {q.course.name}</h4>
                     <p className="card-text">Chủ đề: {q.topic}</p>
                     <p className="card-text">Câu hỏi: {q.content}</p>
