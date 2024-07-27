@@ -9,6 +9,7 @@ const { Option } = Select;
 const QuestionForm = ({ onQuestionCreated, onClose }) => {
   const [courses, setCourses] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [subject, setSubject] = useState('');
   const [course, setCourse] = useState('');
   const [topic, setTopic] = useState('');
@@ -38,10 +39,6 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
     }
   };
 
-  useEffect(() => {
-    getAllCourses();
-  }, []);
-
   // Get all subjects
   const getAllSubjects = async () => {
     try {
@@ -55,8 +52,23 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
     }
   };
 
+  //Get all questions
+  const getAllQuestion = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8080/api/question/get-questions');
+      if (data.success) {
+        setQuestions(data.questions);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
   useEffect(() => {
+    getAllCourses();
     getAllSubjects();
+    getAllQuestion();
   }, []);
 
   // Handle create
@@ -102,11 +114,12 @@ const QuestionForm = ({ onQuestionCreated, onClose }) => {
           onClose();
         }, 2000);
       } else {
-        toast.error(data.message || 'Error creating question');
+        toast.error(data.message || 'Error creating question!');
       }
+      getAllQuestion();
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when creating question!');
     }
   };
 

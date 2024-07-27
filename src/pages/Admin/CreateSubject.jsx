@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AdminMenu from '../../components/Layout/AdminMenu';
 import Layout from '../../components/Layout/layout';
-import toast from 'react-hot-toast';
+import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
 import SubjectForm from '../../components/Form/SubjectForm';
 import { Modal } from 'antd';
@@ -20,6 +20,7 @@ const CreateSubject = () => {
       const { data } = await axios.post('http://localhost:8080/api/subject/admin/create-subject', {
         name,
       });
+      // console.log(data)
       if (data.success) {
         toast.success(`${name} is created`);
         getAllSubjects();
@@ -62,7 +63,7 @@ const CreateSubject = () => {
       if (data.success) {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
-        setVisible(false);
+        // setVisible(false);
         getAllSubjects();
       } else {
         toast.error(data.message);
@@ -80,7 +81,7 @@ const CreateSubject = () => {
         `http://localhost:8080/api/subject/admin/delete-subject/${cId}`,
       );
       if (data.success) {
-        toast.success(`${name} is delete`);
+        toast.success(`${name} is deleted`);
         getAllSubjects();
       } else {
         toast.error(data.message);
@@ -118,7 +119,7 @@ const CreateSubject = () => {
                         <button
                           className="btn btn-primary ms-2"
                           onClick={() => {
-                            setVisible(true);
+                            // setVisible(true);
                             setUpdatedName(c.name);
                             setSelected(c);
                           }}

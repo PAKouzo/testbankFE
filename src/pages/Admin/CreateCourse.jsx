@@ -86,7 +86,7 @@ const CreateCourse = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when deleting course!');
     }
   };
 

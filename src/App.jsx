@@ -39,6 +39,10 @@ import DetailQuestionTeacher from './pages/User/Teacher/DetailQuestionTeacher';
 import UpdateQuestionTeacher from './pages/User/Teacher/UpdateQuestionTeacher';
 import ExamsTeacher from './pages/User/Teacher/ExamsTeacher';
 import UpdateExamTeacher from './pages/User/Teacher/UpdateExamTeacher';
+import { Toaster } from 'react-hot-toast';
+import DetailsUser from './pages/Admin/DetailsUser';
+import DetailsExam from './pages/Admin/DetailsExam';
+
 
 function App() {
   return (
@@ -76,7 +80,9 @@ function App() {
           <Route path="admin/questions" element={<Questions />} />
           <Route path="admin/exams" element={<Exams />} />
           <Route path="admin/exam/:_id" element={<UpdateExam />} />
+          <Route path="admin/detail-exam/:_id" element={<DetailsExam />} />
           <Route path="admin/users" element={<Users />} />
+          <Route path="admin/detail-user/:_id" element={<DetailsUser />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -86,6 +92,7 @@ function App() {
         <Route path="/policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Toaster />
     </>
   );
 }
