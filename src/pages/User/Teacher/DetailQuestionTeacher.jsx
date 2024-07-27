@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TeacherDashboard from './TeacherDashboard';
 import TeacherMenu from '../../../components/Layout/TeacherMenu';
 import Layout from '../../../components/Layout/layout';
+import { toast } from 'react-toastify';
 
 const DetailQuestionTeacher = () => {
   const [question, setQuestions] = useState([]);
