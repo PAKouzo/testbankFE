@@ -1,3 +1,41 @@
-.container{
-    background-color: blue;
+.footer {
+  background-color: #343a40; /* bg-dark */
+  color: #ffffff; /* text-light */
+  padding: 20px;
+  text-align: center;
+}
+
+.footer h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.footer nav {
+  margin-top: 15px;
+}
+
+.footer-link {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.footer span {
+  margin: 0 5px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .footer h1 {
+    font-size: 20px;
+  }
+
+  .footer nav {
+    font-size: 14px;
+  }
 }

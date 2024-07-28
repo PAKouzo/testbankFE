@@ -36,6 +36,10 @@ const HomePage = () => {
     getAllSubjects();
   }, []);
 
+  useEffect(() => {
+    getAllExams();
+  }, []);
+
   return (
     <Layout>
       <div className="col-md-9">

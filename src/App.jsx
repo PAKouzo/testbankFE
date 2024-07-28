@@ -43,7 +43,7 @@ import { Toaster } from 'react-hot-toast';
 import DetailsUser from './pages/Admin/DetailsUser';
 import DetailsExam from './pages/Admin/DetailsExam';
 import DetailsExamTeacher from './pages/User/Teacher/DetailsExamTeacher';
-
+import TeacherProfile from './pages/User/Teacher/TeacherProfile';
 
 function App() {
   return (
@@ -60,6 +60,7 @@ function App() {
         </Route>
         <Route path="/dashboard" element={<TeacherRoute />}>
           <Route path="teacher" element={<TeacherDashboard />} />
+          <Route path="teacher/profile" element={<TeacherProfile />} />
           <Route path="teacher/create-course" element={<CreateCourseTeacher />} />
           <Route path="teacher/create-subject" element={<CreateSubjectTeacher />} />
           <Route path="teacher/create-exams" element={<CreateExamTeacher />} />
