@@ -17,7 +17,6 @@ const UpdateExam = () => {
   const [point, setPoint] = useState('');
   const [accessTime, setAccessTime] = useState('');
   const [decription, setDecription] = useState('');
-  const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
   const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -117,7 +116,6 @@ const UpdateExam = () => {
         point,
         accessTime,
         decription,
-        accessPassword,
         correctChoice,
         question: selectedQuestions,
       };
@@ -145,7 +143,7 @@ const UpdateExam = () => {
           <AdminMenu />
         </div>
         <div className="col-md-9">
-          <h1>Create Exam</h1>
+          <h1>Update Exam</h1>
           <div className="m-1 w-75">
             <Select
               bordered={false}
@@ -236,15 +234,6 @@ const UpdateExam = () => {
                 placeholder="Mô tả"
                 className="form-control"
                 onChange={(e) => setDecription(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={accessPassword}
-                placeholder="Password"
-                className="form-control"
-                onChange={(e) => setAccessPassword(e.target.value)}
               />
             </div>
             <div className="mb-3">

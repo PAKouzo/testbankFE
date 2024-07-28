@@ -22,7 +22,6 @@ const CreateExam = () => {
   const [point, setPoint] = useState('');
   const [accessTime, setAccessTime] = useState('');
   const [decription, setDecription] = useState('');
-  const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   // const [timeStart, setTimeStart] = useState('');
@@ -173,7 +172,6 @@ const CreateExam = () => {
         point,
         accessTime,
         decription,
-        accessPassword,
         correctChoice,
         question: selectedQuestions,
       };
@@ -291,15 +289,6 @@ const CreateExam = () => {
                 placeholder="Mô tả"
                 className="form-control"
                 onChange={(e) => setDecription(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={accessPassword}
-                placeholder="Password"
-                className="form-control"
-                onChange={(e) => setAccessPassword(e.target.value)}
               />
             </div>
             <div className="mb-3">
