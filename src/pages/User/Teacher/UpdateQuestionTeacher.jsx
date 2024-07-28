@@ -201,7 +201,7 @@ const UpdateQuestionTeacher = () => {
         toast.error(data?.message);
       } else {
         toast.success('Question Duplicated Successfully');
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       console.log(error);

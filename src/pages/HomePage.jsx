@@ -18,24 +18,6 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  // get all subjects
-  const getAllSubjects = async () => {
-    try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
-      if (data?.success) {
-        setSubjects(data?.subjects);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong');
-    }
-  };
-
-  useEffect(() => {
-    getAllExams();
-    getAllSubjects();
-  }, []);
-
   useEffect(() => {
     getAllExams();
   }, []);

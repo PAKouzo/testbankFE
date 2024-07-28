@@ -94,11 +94,6 @@ const Users = () => {
                   <td>{user.gender}</td>
                   <td>{user.role}</td>
                   <td>
-                    <button className="btn btn-primary ms-2" onClick={() => {
-                      navigate(`/dashboard/admin/detail-user/${user._id}`);
-                    }}>
-                      Detailt
-                    </button>
                     <button className="btn btn-danger ms-2" onClick={() => {handleDelete(user._id)}}>
                       Delete
                     </button>
