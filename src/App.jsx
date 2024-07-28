@@ -42,6 +42,7 @@ import UpdateExamTeacher from './pages/User/Teacher/UpdateExamTeacher';
 import { Toaster } from 'react-hot-toast';
 import DetailsUser from './pages/Admin/DetailsUser';
 import DetailsExam from './pages/Admin/DetailsExam';
+import DetailsExamTeacher from './pages/User/Teacher/DetailsExamTeacher';
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="teacher/question/:_id" element={<UpdateQuestionTeacher />} />
           <Route path="teacher/exams" element={<ExamsTeacher />} />
           <Route path="teacher/exam/:_id" element={<UpdateExamTeacher />} />
+          <Route path="teacher/detail-exam/:_id" element={<DetailsExamTeacher />} />
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />

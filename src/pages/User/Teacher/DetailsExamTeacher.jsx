@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout/layout';
-import AdminMenu from '../../components/Layout/AdminMenu';
+import Layout from '../../../components/Layout/layout';
+import TeacherMenu from '../../../components/Layout/TeacherMenu';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import './Adminpage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const DetailsExam = () => {
+const DetailsExamTeacher = () => {
   const [subjects, setSubjects] = useState([]);
   const [courses, setCourses] = useState([]);
   const [examDetails, setExamDetails] = useState({
@@ -27,9 +26,7 @@ const DetailsExam = () => {
   const getSingleExam = async () => {
     try {
       const { data } = await axios.get(`http://localhost:8080/api/exam/get-single-exam/${_id}`);
-      setExamDetails(data.exam)
-
-
+      setExamDetails(data.exam);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong when getting exam by id!');
@@ -41,7 +38,7 @@ const DetailsExam = () => {
   //get all subject
   const getAllSubject = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/subject/admin/subjects');
+      const { data } = await axios.get('http://localhost:8080/api/subject/teacher/subjects');
       if (data?.success) {
         setSubjects(data?.subjects);
       }
@@ -58,7 +55,7 @@ const DetailsExam = () => {
   // get all courses
   const getAllCourses = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8080/api/course/admin/courses');
+      const { data } = await axios.get('http://localhost:8080/api/course/teacher/courses');
       if (data?.success) {
         setCourses(data?.courses);
       }
@@ -76,9 +73,11 @@ const DetailsExam = () => {
     try {
       let answer = window.prompt('Are you sure to delete this product ? ');
       if (!answer) return;
-      const { data } = await axios.delete(`http://localhost:8080/api/exam/admin/delete-exam/${_id}`);
+      const { data } = await axios.delete(
+        `http://localhost:8080/api/exam/teacher/delete-exam/${_id}`,
+      );
       toast.success('Exam is deleted Succfully');
-      navigate('/dashboard/admin/exams');
+      navigate('/dashboard/teacher/exams');
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong when deleting exam!');
@@ -88,7 +87,7 @@ const DetailsExam = () => {
     <Layout title="Details of exam">
       <div className="row">
         <div className="col-md-3">
-          <AdminMenu />
+          <TeacherMenu />
         </div>
         <div className="col-md-9">
           <h1>Details of exam</h1>
@@ -115,7 +114,7 @@ const DetailsExam = () => {
               <div className="mb-3">
                 <button
                   className="btn btn-success"
-                  onClick={() => navigate(`/dashboard/admin/exam/${_id}`)}
+                  onClick={() => navigate(`/dashboard/teacher/exam/${_id}`)}
                 >
                   Update Exam
                 </button>
@@ -133,4 +132,4 @@ const DetailsExam = () => {
   );
 };
 
-export default DetailsExam;
+export default DetailsExamTeacher;

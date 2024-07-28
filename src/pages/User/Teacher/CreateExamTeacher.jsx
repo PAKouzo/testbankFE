@@ -6,35 +6,39 @@ import TeacherMenu from '../../../components/Layout/TeacherMenu';
 import { Select } from 'antd';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 const { Option } = Select;
 
 const CreateExamTeacher = () => {
   const [courses, setCourses] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [subject, setSubject] = useState('');
   const [subjects, setSubjects] = useState([]);
   const [course, setCourse] = useState('');
   const [name, setName] = useState('');
   const [time, setTime] = useState('');
   const [point, setPoint] = useState('');
-  const [accessTime, setAccessTime] = useState('');
   const [decription, setDecription] = useState('');
-  const [accessPassword, setAccessPassword] = useState('');
   const [correctChoice, setCorrectChoice] = useState('');
-  const [questions, setQuestions] = useState([]);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [timeStart, setTimeStart] = useState('');
-  const [timeEnd, setTimeEnd] = useState('');
-  const [showCreateQuestion, setShowCreateQuestion] = useState(false);
-  // const [question, setQuestion] = useState([]);
-  // const [newQuestion, setNewQuestion] = useState('');
-  // const [newAnswers, setNewAnswers] = useState(['']);
-  // const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
-  // const [questionType, setQuestionType] = useState('');
-  // const [textInputAnswer, setTextInputAnswer] = useState('');
-  // const [multiChoiceCorrectAnswers, setMultiChoiceCorrectAnswers] = useState([]);
-  // const [topic, setTopic] = useState('');
-  // const [difficulty, setDifficulty] = useState([]);
+  // const [timeStart, setTimeStart] = useState('');
+  const [timeEnd, setTimeEnd] = useState(new Date());
+
+  const [topic, setTopic] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [type, setType] = useState('');
+  const [content, setContent] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [answer1, setAnswer1] = useState('');
+  const [answer2, setAnswer2] = useState('');
+  const [answer3, setAnswer3] = useState('');
+  const [answer4, setAnswer4] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [solution, setSolution] = useState('');
+  const [correctAnswer1, setCorrectAnswer1] = useState('');
+
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
 
   const navigate = useNavigate();
 
@@ -91,18 +95,63 @@ const CreateExamTeacher = () => {
     const updatedQuestions = selectedQuestions.filter((_, i) => i !== index);
     setSelectedQuestions(updatedQuestions);
   };
-  const handleQuestionCreated = (newQuestion) => {
-    // if (newQuestion && newQuestion._id) {
-    //   setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
-    //   console.log('Câu hỏi mới:', newQuestion);
-    //   getAllQuestion();
-    // } else {
-    //   console.error('Câu hỏi mới không hợp lệ:', newQuestion);
-    //   toast.error('Không thể tạo câu hỏi mới. Vui lòng thử lại.');
-    // }
-    setQuestions((questions) => [...questions, newQuestion]);
-    console.log('New question:', newQuestion);
-    getAllQuestion();
+  //   const handleQuestionCreated = (newQuestion) => {
+  //     if (newQuestion) {
+  //       setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+  //       console.log('Câu hỏi mới:', newQuestion);
+  //       getAllQuestion();
+  //     } else {
+  //       toast.error('Không thể tạo câu hỏi mới. Vui lòng thử lại.');
+  //     }
+  //   };
+
+  // Handle create
+  const handleCreateQuestion = async (e) => {
+    e.preventDefault();
+    try {
+      const questionData = new FormData();
+      questionData.append('subject', subject);
+      questionData.append('course', course);
+      questionData.append('topic', topic);
+      questionData.append('difficulty', difficulty);
+      questionData.append('type', type);
+      questionData.append('content', content);
+      questionData.append('solution', solution);
+
+      if (type === 'Text-Input') {
+        questionData.append('correctAnswer', correctAnswer);
+      } else if (type === 'Choice') {
+        questionData.append('answer1', answer1);
+        questionData.append('answer2', answer2);
+        questionData.append('answer3', answer3);
+        questionData.append('answer4', answer4);
+        questionData.append('correctAnswer', correctAnswer);
+      } else if (type === 'Multi-Choice') {
+        questionData.append('answer', answer);
+        questionData.append('answer1', answer1);
+        questionData.append('answer2', answer2);
+        questionData.append('answer3', answer3);
+        questionData.append('answer4', answer4);
+        questionData.append('correctAnswer', correctAnswer);
+        questionData.append('correctAnswer1', correctAnswer1);
+      }
+
+      const { data } = await axios.post(
+        'http://localhost:8080/api/question/teacher/create-question',
+        questionData,
+      );
+
+      if (data?.success) {
+        toast.success('Question Created Successfully');
+      } else {
+        toast.error(data.message || 'Error creating question!');
+      }
+      setShowQuestionForm(false);
+      getAllQuestion();
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong when creating question!');
+    }
   };
 
   const handleQuestionChange = (value, index) => {
@@ -111,109 +160,8 @@ const CreateExamTeacher = () => {
     setSelectedQuestions(updatedQuestions);
   };
 
-  // const handleAddAnswer = () => {
-  //   setNewAnswers([...newAnswers, '']);
-  // };
-
-  // const handleRemoveAnswer = (index) => {
-  //   const updatedAnswers = newAnswers.filter((_, i) => i !== index);
-  //   setNewAnswers(updatedAnswers);
-  // };
-
-  // const handleAnswerChange = (value, index) => {
-  //   const updatedAnswers = [...newAnswers];
-  //   updatedAnswers[index] = value;
-  //   setNewAnswers(updatedAnswers);
-  // };
-
-  // const handleCreateQuestion = async (e) => {
-  //   e.preventDefault();
-  //   if (!newQuestion || !questionType) {
-  //     toast.error('Please fill in all required fields');
-  //     return;
-  //   }
-
-  //   let questionData = {
-  //     subject: subject,
-  //     course: course,
-  //     topic: topic,
-  //     content: newQuestion,
-  //     type: questionType,
-  //     difficulty: difficulty,
-  //   };
-
-  //   switch (questionType) {
-  //     case 'Choice':
-  //       if (newAnswers.length !== 4 || correctAnswerIndex === null) {
-  //         toast.error('Please provide 4 answers and select the correct one for Choice type');
-  //         return;
-  //       }
-  //       questionData.answers = newAnswers;
-  //       questionData.correctAnswerIndex = correctAnswerIndex;
-  //       break;
-  //     case 'Multi-Choice':
-  //       if (newAnswers.length === 0 || multiChoiceCorrectAnswers.length === 0) {
-  //         toast.error('Please provide answers and select correct ones for Multi-Choice type');
-  //         return;
-  //       }
-  //       questionData.answers = newAnswers;
-  //       questionData.correctAnswers = multiChoiceCorrectAnswers;
-  //       break;
-  //     case 'Text-Input':
-  //       if (!textInputAnswer) {
-  //         toast.error('Please provide the correct answer for Text-Input type');
-  //         return;
-  //       }
-  //       questionData.correctAnswer = textInputAnswer;
-  //       break;
-  //     default:
-  //       toast.error('Invalid question type');
-  //       return;
-  //   }
-
-  //     try {
-  //       const { data } = await axios.post(
-  //         'http://localhost:8080/api/question/create-question',
-  //         questionData,
-  //         console.log(questionData)
-  //       );
-  //       if (data?.success) {
-  //         toast.success('Question Created Successfully');
-  //         setQuestions([...questions, data.question]);
-  //         setShowQuestionFormTeacher(false);
-  //         resetQuestionFormTeacher();
-  //         getAllQuestion();
-  //       } else {
-  //         toast.error(data?.message);
-  //       }
-  //     } catch (error) {
-  //       console.log('Error creating question:', error.response?.data || error.message);
-  //       toast.error('Something went wrong: ' + (error.response?.data?.message || error.message));
-  //     }
-  //     return null;
-  // };
-
-  // const resetQuestionFormTeacher = () => {
-  //   setNewQuestion('');
-  //   setNewAnswers(['', '', '', '']);
-  //   setCorrectAnswerIndex(null);
-  //   setQuestionType('');
-  //   setTextInputAnswer('');
-  //   setMultiChoiceCorrectAnswers([]);
-  // };
-  // const handleQuestionTypeChange = (value) => {
-  //   setQuestionType(value);
-  //   if (value === 'Choice') {
-  //     setNewAnswers(['', '', '', '']);
-  //   } else {
-  //     setNewAnswers(['']);
-  //   }
-  //   setCorrectAnswerIndex(null);
-  //   setMultiChoiceCorrectAnswers([]);
-  // };
-
   //create exam
-  const handleCreate = async (e) => {
+  const handleCreateExam = async (e) => {
     e.preventDefault();
     if (selectedQuestions.length === 0 || !selectedQuestions[0]) {
       toast.error('Please select at least one question');
@@ -225,32 +173,34 @@ const CreateExamTeacher = () => {
         course,
         name,
         time,
-        timeStart,
-        timeEnd,
+        // timeStart,
+        timeEnd: timeEnd.toISOString(),
         point,
-        accessTime,
         decription,
-        accessPassword,
         correctChoice,
         question: selectedQuestions,
       };
 
       const { data } = await axios.post(
-        'http://localhost:8080/api/exam/teacher/create-exam',
+        'http://localhost:8080/api/exam/admin/create-exam',
         examData,
       );
       if (data?.success) {
         toast.success('Exam Created Successfully');
-        navigate('/dashboard/teacher/exams');
+        navigate('/dashboard/admin/exams');
       } else {
         toast.error(data?.message);
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong');
+      toast.error('Something went wrong when creating exam!');
     }
   };
 
+  const handleDateChange = (date) => {
+    setTimeEnd(date);
+  };
   return (
     <Layout title="Dashboard - Create Exam">
       <div className="row">
@@ -260,6 +210,7 @@ const CreateExamTeacher = () => {
         <div className="col-md-9">
           <h1>Create Exam</h1>
           <div className="m-1 w-75">
+            <h5>Select Course</h5>
             <Select
               bordered={false}
               placeholder="Select Course Or Grade Level"
@@ -274,6 +225,7 @@ const CreateExamTeacher = () => {
                 </Option>
               ))}
             </Select>
+            <h5>Select Subject</h5>
             <Select
               bordered={false}
               placeholder="Select Subjects"
@@ -288,6 +240,7 @@ const CreateExamTeacher = () => {
                 </Option>
               ))}
             </Select>
+            <h5>Tên bài kiểm tra</h5>
             <div className="mb-3">
               <input
                 type="text"
@@ -297,6 +250,7 @@ const CreateExamTeacher = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
+            <h5>Thời gian làm bài</h5>
             <div className="mb-3">
               <input
                 type="text"
@@ -307,23 +261,10 @@ const CreateExamTeacher = () => {
               />
             </div>
             <div className="mb-3">
-              <input
-                type="text"
-                value={timeStart}
-                placeholder="Thời gian bắt đầu"
-                className="form-control"
-                onChange={(e) => setTimeStart(e.target.value)}
-              />
+              <p>Chọn ngày hết hạn</p>
+              <DatePicker selected={timeEnd} onChange={handleDateChange} />
             </div>
-            <div className="mb-3">
-              <input
-                type="text"
-                value={timeEnd}
-                placeholder="Thời gian kết thúc"
-                className="form-control"
-                onChange={(e) => setTimeEnd(e.target.value)}
-              />
-            </div>
+            <h5>Tổng điểm bài kiểm tra.</h5>
             <div className="mb-3">
               <input
                 type="text"
@@ -333,15 +274,7 @@ const CreateExamTeacher = () => {
                 onChange={(e) => setPoint(e.target.value)}
               />
             </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={accessTime}
-                placeholder="Số lần làm bài"
-                className="form-control"
-                onChange={(e) => setAccessTime(e.target.value)}
-              />
-            </div>
+            <h5>Mô tả</h5>
             <div className="mb-3">
               <textarea
                 type="text"
@@ -351,15 +284,7 @@ const CreateExamTeacher = () => {
                 onChange={(e) => setDecription(e.target.value)}
               />
             </div>
-            <div className="mb-3">
-              <textarea
-                type="text"
-                value={accessPassword}
-                placeholder="Password"
-                className="form-control"
-                onChange={(e) => setAccessPassword(e.target.value)}
-              />
-            </div>
+            <h5>Số câu trả lời đúng để pass test</h5>
             <div className="mb-3">
               <textarea
                 type="text"
@@ -396,189 +321,244 @@ const CreateExamTeacher = () => {
                 Add Available Questions
               </button>
               <button
-                onClick={() => setShowCreateQuestion(true)}
+                onClick={() => setShowQuestionForm(true)}
                 className="btn btn-primary mb-2 ms-2"
               >
                 Create Question
               </button>
-            </div>
-            {/* {showQuestionFormTeacher && (
-              <div className="question-form">
-                <div className="mb-3">
-                  <Select
-                    bordered={false}
-                    placeholder="Select Subjects"
-                    size="large"
-                    showSearch
-                    className="form-select mb-3"
-                    onChange={(value) => setSubject(value)}
-                  >
-                    {subjects?.map((subject) => (
-                      <Option key={subject._id} value={subject._id}>
-                        {subject.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="mb-3">
-                  <Select
-                    bordered={false}
-                    placeholder="Select Course Or Grade Level"
-                    size="large"
-                    showSearch
-                    className="form-select mb-3"
-                    onChange={(value) => setCourse(value)}
-                  >
-                    {courses?.map((course) => (
-                      <Option key={course._id} value={course._id}>
-                        {course.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    value={topic}
-                    placeholder="Enter Topic"
-                    className="form-control"
-                    onChange={(e) => setTopic(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <Select
-                    bordered={false}
-                    size="large"
-                    placeholder="Select Difficulty"
-                    showSearch
-                    className="form-control"
-                    onChange={(value) => setDifficulty(value)}
-                  >
-                    <Option value="Identification">Identification</Option>
-                    <Option value="Understanding">Understanding</Option>
-                    <Option value="Applying">Applying</Option>
-                  </Select>
-                </div>
-                <div className="mb-3">
-                  <Select
-                    bordered={false}
-                    placeholder="Select Question Type"
-                    size="large"
-                    className="form-select"
-                    onChange={handleQuestionTypeChange}
-                  >
-                    <Option value="Choice">Choice</Option>
-                    <Option value="Multi-Choice">Multi-Choice</Option>
-                    <Option value="Text-Input">Text-Input</Option>
-                  </Select>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    value={newQuestion}
-                    placeholder="Question"
-                    className="form-control"
-                    onChange={(e) => setNewQuestion(e.target.value)}
-                  />
-                </div>
-                {questionType === 'Choice' && (
-                  <>
-                    {newAnswers.map((answer, index) => (
-                      <div key={index} className="d-flex align-items-center mb-3">
-                        <input
-                          type="text"
-                          value={answer}
-                          placeholder={`Answer ${index + 1}`}
-                          className="form-control"
-                          onChange={(e) => handleAnswerChange(e.target.value, index)}
-                        />
-                      </div>
-                    ))}
-                    <div className="mb-3">
-                      <Radio.Group
-                        onChange={(e) => setCorrectAnswerIndex(e.target.value)}
-                        value={correctAnswerIndex}
-                      >
-                        {newAnswers.map((_, index) => (
-                          <Radio key={index} value={index}>
-                            Answer {index + 1} is correct
-                          </Radio>
-                        ))}
-                      </Radio.Group>
-                    </div>
-                  </>
-                )}
-                {questionType === 'Multi-Choice' && (
-                  <>
-                    {newAnswers.map((answer, index) => (
-                      <div key={index} className="d-flex align-items-center mb-3">
-                        <input
-                          type="text"
-                          value={answer}
-                          placeholder={`Answer ${index + 1}`}
-                          className="form-control"
-                          onChange={(e) => handleAnswerChange(e.target.value, index)}
-                        />
-                        <button
-                          onClick={() => handleRemoveAnswer(index)}
-                          className="btn btn-danger ms-2"
-                        >
-                          X
-                        </button>
-                      </div>
-                    ))}
-                    <button onClick={handleAddAnswer} className="btn btn-primary mb-2">
-                      Add Answer
-                    </button>
-                    <div className="mb-3">
+              {showQuestionForm && (
+                <div className="question-form-overlay">
+                  <div className="question-form-container">
+                    <h2>Create New Question</h2>
+                    <div className="m-1 w-75">
                       <Select
                         bordered={false}
-                        placeholder="Select Correct Answers"
+                        placeholder="Select Course"
                         size="large"
-                        className="form-select"
-                        mode="multiple"
-                        onChange={(values) => setMultiChoiceCorrectAnswers(values)}
+                        showSearch
+                        className="form-select mb-3"
+                        onChange={(value) => setCourse(value)}
                       >
-                        {newAnswers.map((_, index) => (
-                          <Option key={index} value={index}>
-                            Answer {index + 1}
+                        {courses.map((course) => (
+                          <Option key={course._id} value={course._id}>
+                            {course.name}
                           </Option>
                         ))}
                       </Select>
+                      <Select
+                        bordered={false}
+                        placeholder="Select Subject"
+                        size="large"
+                        showSearch
+                        className="form-select mb-3"
+                        onChange={(value) => setSubject(value)}
+                      >
+                        {subjects.map((subject) => (
+                          <Option key={subject._id} value={subject._id}>
+                            {subject.name}
+                          </Option>
+                        ))}
+                      </Select>
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          value={topic}
+                          placeholder="Enter Topic"
+                          className="form-control"
+                          onChange={(e) => setTopic(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <Select
+                          bordered={false}
+                          size="large"
+                          placeholder="Select Difficulty"
+                          className="form-control"
+                          onChange={(value) => setDifficulty(value)}
+                        >
+                          <Option value="Identification">Identification</Option>
+                          <Option value="Understanding">Understanding</Option>
+                          <Option value="Applying">Applying</Option>
+                        </Select>
+                      </div>
+                      <div className="mb-3">
+                        <Select
+                          bordered={false}
+                          size="large"
+                          placeholder="Select Type"
+                          className="form-control"
+                          onChange={(value) => setType(value)}
+                        >
+                          <Option value="Text-Input">Text-Input</Option>
+                          <Option value="Choice">Choice</Option>
+                          <Option value="Multi-Choice">Multi-Choice</Option>
+                        </Select>
+                      </div>
+                      <div className="mb-3">
+                        <textarea
+                          value={content}
+                          placeholder="Enter Content"
+                          className="form-control"
+                          onChange={(e) => setContent(e.target.value)}
+                        />
+                      </div>
+
+                      {type === 'Text-Input' && (
+                        <>
+                          <div className="mb-3">
+                            <textarea
+                              value={correctAnswer}
+                              placeholder="Enter Correct Answer"
+                              className="form-control"
+                              onChange={(e) => setCorrectAnswer(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {type === 'Multi-Choice' && (
+                        <>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer}
+                              placeholder="Enter Option 1"
+                              className="form-control"
+                              onChange={(e) => setAnswer(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer1}
+                              placeholder="Enter Option 2"
+                              className="form-control"
+                              onChange={(e) => setAnswer1(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer2}
+                              placeholder="Enter Option 3"
+                              className="form-control"
+                              onChange={(e) => setAnswer2(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer3}
+                              placeholder="Enter Option 4"
+                              className="form-control"
+                              onChange={(e) => setAnswer3(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer4}
+                              placeholder="Enter Option 5"
+                              className="form-control"
+                              onChange={(e) => setAnswer4(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={correctAnswer}
+                              placeholder="Enter Correct Answer"
+                              className="form-control"
+                              onChange={(e) => setCorrectAnswer(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={correctAnswer1}
+                              placeholder="Enter Another Correct Answer"
+                              className="form-control"
+                              onChange={(e) => setCorrectAnswer1(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {type === 'Choice' && (
+                        <>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer1}
+                              placeholder="Enter Option 1"
+                              className="form-control"
+                              onChange={(e) => setAnswer1(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer2}
+                              placeholder="Enter Option 2"
+                              className="form-control"
+                              onChange={(e) => setAnswer2(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer3}
+                              placeholder="Enter Option 3"
+                              className="form-control"
+                              onChange={(e) => setAnswer3(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={answer4}
+                              placeholder="Enter Option 4"
+                              className="form-control"
+                              onChange={(e) => setAnswer4(e.target.value)}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <textarea
+                              value={correctAnswer}
+                              placeholder="Enter Correct Answer"
+                              className="form-control"
+                              onChange={(e) => setCorrectAnswer(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
+                      <div className="mb-3">
+                        <textarea
+                          value={solution}
+                          placeholder="Enter Solution"
+                          className="form-control"
+                          onChange={(e) => setSolution(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <button className="btn btn-primary" onClick={handleCreateQuestion}>
+                          Create Question
+                        </button>
+                      </div>
                     </div>
-                  </>
-                )}
-                {questionType === 'Text-Input' && (
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      value={textInputAnswer}
-                      placeholder="Correct Answer"
-                      className="form-control"
-                      onChange={(e) => setTextInputAnswer(e.target.value)}
-                    />
+                    <div className="mb-3">
+                      <button
+                        className="btn btn-secondary ms-2"
+                        onClick={() => {
+                          setShowQuestionForm(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
-                )}
-                <button onClick={handleCreateQuestion} className="btn btn-success mb-2">
-                  Create Question
-                </button>
-              </div>
-            )} */}
+                </div>
+              )}
+            </div>
             <div className="mb-3">
-              <button className="btn btn-success" onClick={handleCreate}>
+              <button className="btn btn-success" onClick={handleCreateExam}>
                 Create Exam
               </button>
             </div>
           </div>
         </div>
       </div>
-      {showCreateQuestion && (
-        <QuestionFormTeacher
-          onQuestionCreated={handleQuestionCreated}
-          onClose={() => setShowCreateQuestion(false)}
-        />
-      )}
     </Layout>
   );
 };
+
 export default CreateExamTeacher;

@@ -151,7 +151,7 @@ const UpdateQuestion = () => {
   //delete question
   const handleDelete = async () => {
     try {
-      let answer = window.prompt('Are you sure to delete this product ? ');
+      let answer = window.prompt('Are you sure to delete this product? If sure, pls enter "yes"! ');
       if (!answer) return;
       const { data } = await axios.delete(
         `http://localhost:8080/api/question/admin/delete-question/${id}`,

@@ -87,7 +87,6 @@ const Exams = () => {
                       Khóa học: {e.course ? e.course.name : `${courses.name}`}
                     </h4>
                     <p className="card-text">Thời gian làm bài: {e.time} p</p>
-                    <p className="card-text">Số lần làm bài: {e.accessTime}</p>
                   </Link>
                 </div>
                 <div className="flex-wrap" style={{ paddingLeft: '73px' }}>

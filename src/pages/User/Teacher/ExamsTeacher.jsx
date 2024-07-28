@@ -73,7 +73,11 @@ const ExamsTeacher = () => {
             {exams?.map((e) => (
               <div className="card m-2" style={{ width: '18rem' }}>
                 <div className="card-body">
-                  <Link key={e._id} to={`/dashboard/teacher/exam/${e._id}`} className="exam-link">
+                  <Link
+                    key={e._id}
+                    to={`/dashboard/teacher/detail-exam/${e._id}`}
+                    className="exam-link"
+                  >
                     <h5 className="card-title">Chủ đề: {e.name}</h5>
                     <h4 className="card-title">
                       Môn Học: {e.subject ? e.subject.name : `${subjects.name}`}
@@ -82,7 +86,6 @@ const ExamsTeacher = () => {
                       Khóa học: {e.course ? e.course.name : `${courses.name}`}
                     </h4>
                     <p className="card-text">Thời gian làm bài: {e.time} p</p>
-                    <p className="card-text">Số lần làm bài: {e.accessTime}</p>
                   </Link>
                 </div>
                 <div className="flex-wrap" style={{ paddingLeft: '73px' }}>
